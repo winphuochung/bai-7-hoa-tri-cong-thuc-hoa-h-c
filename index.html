@@ -1231,6 +1231,18 @@
                   Em đã hoàn thành bài kiểm tra với kết quả rất tích cực!
                 </p>
               </div>
+
+              <!-- Google Sheet Sync Status -->
+              <div id="sheetSyncBox" class="p-3 bg-sky-50 rounded-2xl border border-sky-200 flex flex-col sm:flex-row items-center justify-between gap-2 text-xs font-bold text-sky-900 text-left">
+                <div class="flex items-center space-x-2">
+                  <i id="sheetSyncIcon" class="fa-solid fa-file-excel text-emerald-600 text-base flex-shrink-0"></i>
+                  <span id="sheetSyncMsg">Chưa liên kết Google Sheet (Kết quả lưu trên máy học sinh).</span>
+                </div>
+                <button type="button" onclick="openSheetModal()" class="px-3 py-1.5 rounded-xl bg-white hover:bg-sky-100 text-sky-700 border border-sky-300 font-extrabold text-[11px] transition-all flex items-center space-x-1 flex-shrink-0">
+                  <i class="fa-solid fa-gear"></i>
+                  <span>Cấu hình Google Sheet</span>
+                </button>
+              </div>
             </div>
 
             <!-- Action buttons -->
@@ -1937,6 +1949,25 @@
       document.getElementById('mainProgressBar').style.width = '100%';
       document.getElementById('progressText').textContent = '100%';
       document.getElementById('starCounter').textContent = Math.round(totalScore * 5) + ' ⭐';
+
+      // Đồng bộ kết quả lên Google Sheet
+      const examPayload = {
+        studentName: currentStudent.name || 'Học sinh',
+        studentClass: currentStudent.studentClass || '7A',
+        totalScore: formattedTotal,
+        scoreP1: p1Score.toFixed(1),
+        scoreP2: p2Score.toFixed(1),
+        scoreP3: p3Score.toFixed(1),
+        scoreP4: p4Score.toFixed(1),
+        scoreP5: p5Score.toFixed(1),
+        rank: badge.textContent.replace('XẾP LOẠI: ', ''),
+        q17: document.getElementById('q17').value.trim(),
+        q18: document.getElementById('q18').value.trim(),
+        q19: document.getElementById('q19').value.trim(),
+        q20: document.getElementById('q20').value.trim(),
+        timestamp: new Date().toISOString()
+      };
+      syncResultToGoogleSheet(examPayload);
     }
 
     function retakeExam() {
@@ -1949,13 +1980,156 @@
       }
     }
 
+    // ================= GOOGLE SHEET SYNC =================
+    let GOOGLE_SHEET_API_URL = localStorage.getItem('khtn7_sheet_url') || "";
+
+    function openSheetModal() {
+      document.getElementById('sheetUrlInput').value = GOOGLE_SHEET_API_URL;
+      document.getElementById('sheetConfigNotice').classList.add('hidden');
+      document.getElementById('sheetConfigModal').classList.remove('hidden');
+    }
+
+    function closeSheetModal() {
+      document.getElementById('sheetConfigModal').classList.add('hidden');
+    }
+
+    function saveSheetConfig() {
+      const url = document.getElementById('sheetUrlInput').value.trim();
+      GOOGLE_SHEET_API_URL = url;
+      try {
+        localStorage.setItem('khtn7_sheet_url', url);
+      } catch (e) {}
+
+      const notice = document.getElementById('sheetConfigNotice');
+      notice.className = 'text-xs p-2.5 rounded-xl font-bold bg-emerald-100 text-emerald-800 border border-emerald-300';
+      notice.textContent = url ? '✅ Đã lưu cấu hình Google Sheet thành công!' : 'ℹ️ Đã xóa liên kết Google Sheet.';
+      notice.classList.remove('hidden');
+      updateSheetUIStatus();
+      setTimeout(closeSheetModal, 1200);
+    }
+
+    function updateSheetUIStatus() {
+      const msg = document.getElementById('sheetSyncMsg');
+      const icon = document.getElementById('sheetSyncIcon');
+      if (GOOGLE_SHEET_API_URL) {
+        msg.innerHTML = 'Đã liên kết với Google Sheet của Giáo viên. Điểm sẽ tự động đồng bộ khi nộp bài.';
+        icon.className = 'fa-solid fa-circle-check text-emerald-600 text-base flex-shrink-0';
+      } else {
+        msg.innerHTML = 'Chưa liên kết Google Sheet (Kết quả lưu trên máy học sinh).';
+        icon.className = 'fa-solid fa-file-excel text-slate-400 text-base flex-shrink-0';
+      }
+    }
+
+    function testSheetConnection() {
+      const url = document.getElementById('sheetUrlInput').value.trim() || GOOGLE_SHEET_API_URL;
+      const notice = document.getElementById('sheetConfigNotice');
+      if (!url) {
+        notice.className = 'text-xs p-2.5 rounded-xl font-bold bg-rose-100 text-rose-800 border border-rose-300';
+        notice.textContent = 'Vui lòng dán đường link Web App trước khi gửi thử!';
+        notice.classList.remove('hidden');
+        return;
+      }
+      notice.className = 'text-xs p-2.5 rounded-xl font-bold bg-sky-100 text-sky-800 border border-sky-300';
+      notice.textContent = '⏳ Đang gửi thử 1 dòng dữ liệu mẫu lên Google Sheet...';
+      notice.classList.remove('hidden');
+
+      const testPayload = {
+        studentName: 'Học Sinh Mẫu (Kiểm tra kết nối)',
+        studentClass: '7A1',
+        totalScore: '10.0',
+        scoreP1: '2.0',
+        scoreP2: '2.0',
+        scoreP3: '2.0',
+        scoreP4: '2.0',
+        scoreP5: '2.0',
+        rank: 'XUẤT SẮC (GIỎI)',
+        q17: 'Kiểm tra kết nối Google Sheet thành công!',
+        q18: 'CuSO4: %Cu = 40%',
+        q19: 'SO2',
+        q20: 'CH4'
+      };
+
+      fetch(url, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(testPayload)
+      }).then(() => {
+        notice.className = 'text-xs p-2.5 rounded-xl font-bold bg-emerald-100 text-emerald-800 border border-emerald-300';
+        notice.textContent = '🎉 Đã gửi thử thành công! Thầy hãy mở Google Sheet để kiểm tra dòng dữ liệu mới nhé!';
+      }).catch(err => {
+        notice.className = 'text-xs p-2.5 rounded-xl font-bold bg-rose-100 text-rose-800 border border-rose-300';
+        notice.textContent = '❌ Lỗi kết nối: ' + err.message;
+      });
+    }
+
+    function syncResultToGoogleSheet(payload) {
+      if (!GOOGLE_SHEET_API_URL) return;
+      const msg = document.getElementById('sheetSyncMsg');
+      const icon = document.getElementById('sheetSyncIcon');
+      msg.innerHTML = '⏳ Đang đồng bộ kết quả lên Google Sheet của Giáo viên...';
+      icon.className = 'fa-solid fa-spinner fa-spin text-sky-600 text-base flex-shrink-0';
+
+      fetch(GOOGLE_SHEET_API_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      }).then(() => {
+        msg.innerHTML = '✅ <strong>Đã đồng bộ thành công vào Google Sheet của Giáo viên!</strong>';
+        icon.className = 'fa-solid fa-circle-check text-emerald-600 text-base flex-shrink-0';
+      }).catch(err => {
+        msg.innerHTML = '⚠️ Không thể gửi lên Google Sheet: ' + err.message;
+        icon.className = 'fa-solid fa-triangle-exclamation text-amber-500 text-base flex-shrink-0';
+      });
+    }
+
     // ================= WINDOW ONLOAD =================
     window.addEventListener('DOMContentLoaded', () => {
       checkSavedSession();
       calculateCompound('KNO3');
       renderValencyGrid();
       updateExamProgress();
+      updateSheetUIStatus();
     });
   </script>
+
+  <!-- ================= MODAL CẤU HÌNH GOOGLE SHEET ================= -->
+  <div id="sheetConfigModal" class="fixed inset-0 z-50 hidden flex items-center justify-center bg-slate-900/75 backdrop-blur-sm p-4 transition-all">
+    <div class="bg-white rounded-3xl shadow-2xl border-2 border-emerald-300 w-full max-w-md p-6 space-y-4 bounce-in relative">
+      <div class="flex items-center justify-between border-b pb-3">
+        <h3 class="text-base font-black text-slate-900 flex items-center">
+          <i class="fa-solid fa-table text-emerald-600 mr-2 text-lg"></i>
+          Liên Kết Google Sheet Tự Động
+        </h3>
+        <button onclick="closeSheetModal()" class="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-600 font-black flex items-center justify-center">✕</button>
+      </div>
+
+      <p class="text-xs text-slate-600 leading-relaxed">
+        Thầy chỉ cần dán <strong>URL Ứng dụng web (Web App URL)</strong> từ Google Apps Script vào ô bên dưới:
+      </p>
+
+      <div class="space-y-1">
+        <label class="block text-xs font-bold text-slate-700">URL Web App Google Apps Script:</label>
+        <input type="url" id="sheetUrlInput" placeholder="https://script.google.com/macros/s/.../exec" class="w-full px-3.5 py-2.5 rounded-xl border-2 border-slate-200 focus:border-emerald-500 text-xs font-mono text-slate-800 outline-none">
+      </div>
+
+      <div id="sheetConfigNotice" class="hidden text-xs p-2.5 rounded-xl font-bold"></div>
+
+      <div class="flex space-x-2 pt-2">
+        <button onclick="saveSheetConfig()" class="flex-1 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-extrabold text-xs shadow-sm transition-all">
+          💾 Lưu Cấu Hình
+        </button>
+        <button onclick="testSheetConnection()" class="px-4 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-extrabold text-xs transition-all">
+          🧪 Gửi Thử Mẫu
+        </button>
+      </div>
+
+      <div class="text-[11px] text-slate-500 border-t pt-2 space-y-1">
+        <p>• Mã Apps Script có sẵn trong tệp: <strong>google_sheet_script.gs</strong></p>
+        <p>• Hướng dẫn chi tiết từng bước xem trong tệp: <strong>HUONG_DAN_GOOGLE_SHEET.md</strong></p>
+      </div>
+    </div>
+  </div>
 </body>
 </html>
