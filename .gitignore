@@ -1,0 +1,39 @@
+# ==========================================
+# Antigravity & AI Agent directories
+# ==========================================
+.agent/
+.agents/
+agents/
+.shared/
+skills/
+workflows/
+rules/
+scripts/
+tasks/
+ARCHITECTURE.md
+mcp_config.json
+
+# Screenshots & test artifacts
+Screenshot*.png
+test_screenshot*.png
+_test_*.js
+_temp_*.js
+_chk_*.js
+
+# Python cache & temp files
+__pycache__/
+*.py[cod]
+*$py.class
+*.tmp
+*.temp
+
+# Environment & Editor
+.env
+.env.local
+.vscode/
+.idea/
+
+# OS specific files
+.DS_Store
+Thumbs.db
+Desktop.ini

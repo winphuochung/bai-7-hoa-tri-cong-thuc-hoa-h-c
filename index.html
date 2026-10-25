@@ -1,0 +1,1954 @@
+<!DOCTYPE html>
+<html lang="vi" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>KHTN 7 | Bài 7: Hoá Trị và Công Thức Hoá Học (Chuẩn IUPAC - GDPT 2018)</title>
+  <!-- Google Fonts: Nunito & Quicksand -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Quicksand:wght@600;700;800&display=swap" rel="stylesheet">
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <!-- KaTeX for crisp chemical math -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+  <!-- Canvas Confetti -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Nunito', 'sans-serif'],
+            display: ['Quicksand', 'sans-serif'],
+          },
+          colors: {
+            brand: {
+              50: '#f0f9ff',
+              100: '#e0f2fe',
+              500: '#0284c7',
+              600: '#0369a1',
+              700: '#075985',
+            },
+            chemistry: {
+              teal: '#0d9488',
+              emerald: '#10b981',
+              violet: '#8b5cf6',
+              amber: '#f59e0b',
+              coral: '#f97316',
+              rose: '#f43f5e'
+            }
+          },
+          boxShadow: {
+            'clay': '0 8px 16px -2px rgba(0, 0, 0, 0.08), 0 4px 6px -2px rgba(0, 0, 0, 0.04), inset 0 -4px 0 rgba(0,0,0,0.08)',
+            'clay-button': '0 5px 0 #0284c7, 0 10px 15px -3px rgba(2, 132, 199, 0.3)',
+            'clay-success': '0 5px 0 #059669, 0 10px 15px -3px rgba(16, 185, 129, 0.3)',
+            'clay-amber': '0 5px 0 #d97706, 0 10px 15px -3px rgba(245, 158, 11, 0.3)',
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    body {
+      background-color: #f8fafc;
+      color: #1e293b;
+    }
+    /* Logo protection & prominence */
+    .header-logo {
+      width: 72px !important;
+      height: 72px !important;
+      min-width: 72px !important;
+      max-width: 72px !important;
+      min-height: 72px !important;
+      max-height: 72px !important;
+      object-fit: contain !important;
+      border-radius: 9999px !important;
+      border: 3px solid #f59e0b !important;
+      box-shadow: 0 4px 12px rgba(245, 158, 11, 0.28) !important;
+      background-color: #ffffff !important;
+      flex-shrink: 0 !important;
+      transition: transform 0.2s ease-in-out;
+    }
+    .header-logo:hover {
+      transform: scale(1.06);
+    }
+    @media (max-width: 640px) {
+      .header-logo {
+        width: 58px !important;
+        height: 58px !important;
+        min-width: 58px !important;
+        max-width: 58px !important;
+        min-height: 58px !important;
+        max-height: 58px !important;
+        border-width: 2.5px !important;
+      }
+    }
+    .modal-logo {
+      width: 86px !important;
+      height: 86px !important;
+      min-width: 86px !important;
+      max-width: 86px !important;
+      min-height: 86px !important;
+      max-height: 86px !important;
+      object-fit: contain !important;
+      border-radius: 9999px !important;
+      border: 3px solid #f59e0b !important;
+      box-shadow: 0 6px 16px rgba(245, 158, 11, 0.3) !important;
+      background-color: #ffffff !important;
+    }
+    .molecule-pulse {
+      animation: pulseGlow 2.5s infinite ease-in-out;
+    }
+    @keyframes pulseGlow {
+      0%, 100% { transform: scale(1); filter: drop-shadow(0 0 8px rgba(56, 189, 248, 0.4)); }
+      50% { transform: scale(1.04); filter: drop-shadow(0 0 18px rgba(56, 189, 248, 0.7)); }
+    }
+    .shake-anim {
+      animation: shake 0.45s ease-in-out;
+    }
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      20%, 60% { transform: translateX(-8px); }
+      40%, 80% { transform: translateX(8px); }
+    }
+    .bounce-in {
+      animation: bounceIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    @keyframes bounceIn {
+      0% { transform: scale(0.8); opacity: 0; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+    @media print {
+      body * {
+        visibility: hidden;
+      }
+      #examPrintCertificate, #examPrintCertificate * {
+        visibility: visible;
+      }
+      #examPrintCertificate {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body class="font-sans antialiased text-slate-800 bg-slate-50 min-h-screen flex flex-col selection:bg-amber-200 selection:text-amber-900">
+
+  <!-- ================= GIAO DIỆN ĐĂNG NHẬP (LOGIN MODAL) ================= -->
+  <div id="loginModal" class="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/80 backdrop-blur-md p-4 transition-all">
+    <div class="bg-white rounded-3xl shadow-2xl border-4 border-sky-300 w-full max-w-lg p-6 sm:p-8 space-y-6 bounce-in relative overflow-hidden">
+      <!-- Decorative background bubble -->
+      <div class="absolute -right-12 -top-12 w-40 h-40 bg-sky-100 rounded-full blur-2xl pointer-events-none"></div>
+
+      <div class="text-center space-y-2">
+        <img src="logo.png" alt="Logo Thầy Lê Văn Thắng" width="86" height="86" class="modal-logo mx-auto" />
+        <span class="inline-block bg-sky-100 text-sky-800 text-xs font-black uppercase px-3 py-1 rounded-full">
+          Môn Khoa Học Tự Nhiên 7 • GDPT 2018
+        </span>
+        <h2 class="text-2xl sm:text-3xl font-black text-slate-900 font-display">
+          Đăng Nhập Bài Học Số
+        </h2>
+        <p class="text-xs sm:text-sm text-slate-600 font-medium">
+          Bài 7: Hoá Trị &amp; Công Thức Hoá Học (Chuẩn danh pháp IUPAC)<br>
+          <span class="text-sky-700 font-bold">Giáo viên: Thầy Lê Văn Thắng • TH &amp; THCS Phước Hưng</span>
+        </p>
+      </div>
+
+      <!-- Login Form -->
+      <form id="studentLoginForm" onsubmit="handleStudentLogin(event)" class="space-y-4 pt-2">
+        <div>
+          <label class="block text-xs font-black text-slate-700 uppercase tracking-wider mb-1">
+            <i class="fa-solid fa-user text-sky-600 mr-1.5"></i> Họ và tên học sinh: <span class="text-rose-500">*</span>
+          </label>
+          <input type="text" id="loginStudentName" required placeholder="Ví dụ: Nguyễn Văn An" class="w-full px-4 py-3 rounded-2xl border-2 border-slate-200 focus:border-sky-500 focus:bg-sky-50/30 text-sm font-bold text-slate-800 outline-none transition-all" />
+        </div>
+
+        <div>
+          <label class="block text-xs font-black text-slate-700 uppercase tracking-wider mb-1">
+            <i class="fa-solid fa-graduation-cap text-indigo-600 mr-1.5"></i> Lớp: <span class="text-rose-500">*</span>
+          </label>
+          <div class="grid grid-cols-4 gap-2 mb-2">
+            <button type="button" onclick="selectClassQuick('7A1')" class="class-quick-btn py-1.5 rounded-xl border border-slate-200 hover:border-sky-400 text-xs font-bold text-slate-700 bg-slate-50">7A1</button>
+            <button type="button" onclick="selectClassQuick('7A2')" class="class-quick-btn py-1.5 rounded-xl border border-slate-200 hover:border-sky-400 text-xs font-bold text-slate-700 bg-slate-50">7A2</button>
+            <button type="button" onclick="selectClassQuick('7A3')" class="class-quick-btn py-1.5 rounded-xl border border-slate-200 hover:border-sky-400 text-xs font-bold text-slate-700 bg-slate-50">7A3</button>
+            <button type="button" onclick="selectClassQuick('7A4')" class="class-quick-btn py-1.5 rounded-xl border border-slate-200 hover:border-sky-400 text-xs font-bold text-slate-700 bg-slate-50">7A4</button>
+          </div>
+          <input type="text" id="loginStudentClass" required placeholder="Hoặc tự gõ lớp: 7A1, 7A2, 7B..." class="w-full px-4 py-3 rounded-2xl border-2 border-slate-200 focus:border-sky-500 focus:bg-sky-50/30 text-sm font-bold text-slate-800 outline-none transition-all" />
+        </div>
+
+        <div id="loginErrorMsg" class="hidden text-xs font-bold text-rose-600 p-2.5 rounded-xl bg-rose-50 border border-rose-200"></div>
+
+        <button type="submit" class="w-full py-3.5 rounded-2xl bg-sky-600 hover:bg-sky-500 text-white font-black text-base shadow-clay-button active:translate-y-1 transition-all flex items-center justify-center space-x-2">
+          <span>Vào Phòng Học Tương Tác</span>
+          <i class="fa-solid fa-arrow-right"></i>
+        </button>
+      </form>
+
+      <div class="text-center text-[11px] text-slate-400">
+        Hệ thống tự động lưu trữ kết quả và cấp chứng nhận hoàn thành sau 20 câu kiểm tra.
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ================= TOP HEADER (STICKY) ================= -->
+  <header class="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-slate-200 shadow-sm transition-all duration-300">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between min-h-[92px] py-2.5">
+        
+        <!-- Logo & Branding -->
+        <div class="flex items-center space-x-3.5 flex-shrink-0">
+          <img src="logo.png" alt="Logo Thầy Lê Văn Thắng" width="72" height="72" class="header-logo" />
+          <div class="min-w-0">
+            <div class="flex items-center space-x-2 mb-0.5">
+              <span class="bg-gradient-to-r from-sky-600 to-indigo-600 text-white text-[10px] font-black uppercase px-2.5 py-0.5 rounded-full tracking-wider shadow-sm">KHTN 7</span>
+              <span class="text-[10px] sm:text-xs font-bold text-emerald-700 bg-emerald-50 px-2.5 py-0.5 rounded-full border border-emerald-200">IUPAC 2018</span>
+            </div>
+            <h1 class="text-sm sm:text-base md:text-lg font-black text-slate-900 font-display leading-tight tracking-tight">
+              Bài 7: Hoá Trị &amp; Công Thức Hoá Học
+            </h1>
+            <p class="text-xs text-slate-600 font-bold hidden md:block">
+              <span class="text-sky-700 font-extrabold">Thầy Lê Văn Thắng</span> • Trường TH &amp; THCS Phước Hưng
+            </p>
+          </div>
+        </div>
+
+        <!-- Navigation Tabs -->
+        <nav class="hidden lg:flex items-center space-x-1 text-xs sm:text-sm font-bold text-slate-600">
+          <a href="#khoi-dong" class="px-2.5 py-2 rounded-xl hover:bg-sky-50 hover:text-sky-600 transition-colors">🚀 Khởi động</a>
+          <a href="#cong-thuc" class="px-2.5 py-2 rounded-xl hover:bg-sky-50 hover:text-sky-600 transition-colors">🔬 I. Công thức</a>
+          <a href="#hoa-tri" class="px-2.5 py-2 rounded-xl hover:bg-sky-50 hover:text-sky-600 transition-colors">⚖️ II. Hoá trị</a>
+          <a href="#lap-cong-thuc" class="px-2.5 py-2 rounded-xl hover:bg-sky-50 hover:text-sky-600 transition-colors">📐 III. Lập CTHH</a>
+          <a href="#kiem-tra-20-cau" class="px-2.5 py-2 rounded-xl bg-amber-50 text-amber-700 hover:bg-amber-100 transition-colors font-extrabold border border-amber-200">
+            📝 Kiểm tra (20 câu - 10đ)
+          </a>
+        </nav>
+
+        <!-- User Info, Sound & Logout -->
+        <div class="flex items-center space-x-2 sm:space-x-3">
+          
+          <!-- Student Info Pill -->
+          <div class="flex items-center bg-slate-100 border border-slate-200 px-3 py-1.5 rounded-2xl">
+            <i class="fa-solid fa-circle-user text-sky-600 text-lg mr-2"></i>
+            <div class="text-left leading-none">
+              <span id="headerStudentName" class="font-extrabold text-slate-800 text-xs block truncate max-w-[100px] sm:max-w-[130px]">Chưa đăng nhập</span>
+              <span id="headerStudentClass" class="text-[10px] text-slate-500 font-bold block">Lớp: --</span>
+            </div>
+          </div>
+
+          <!-- Sound Toggle -->
+          <button id="soundToggleBtn" onclick="toggleSound()" class="w-9 h-9 flex items-center justify-center rounded-xl bg-slate-100 hover:bg-sky-100 text-slate-700 hover:text-sky-600 transition-all border border-slate-200" title="Bật/Tắt âm thanh">
+            <i id="soundIcon" class="fa-solid fa-volume-high text-xs"></i>
+          </button>
+
+          <!-- Logout Button -->
+          <button onclick="handleStudentLogout()" class="px-2.5 py-1.5 rounded-xl bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 text-xs font-black flex items-center space-x-1 transition-all" title="Đăng xuất">
+            <i class="fa-solid fa-right-from-bracket"></i>
+            <span class="hidden sm:inline">Thoát</span>
+          </button>
+
+        </div>
+
+      </div>
+
+      <!-- Real-time Progress Bar -->
+      <div class="w-full bg-slate-100 h-2 rounded-full overflow-hidden mb-1 flex">
+        <div id="mainProgressBar" class="bg-gradient-to-r from-sky-500 via-indigo-500 to-emerald-500 h-full w-0 transition-all duration-500 rounded-full"></div>
+      </div>
+      <div class="flex justify-between items-center text-[11px] text-slate-500 font-bold pb-1.5">
+        <span>Tiến trình hoàn thành: <span id="progressText" class="text-sky-600 font-black">0%</span></span>
+        <span>Điểm sao tích luỹ: <span id="starCounter" class="text-amber-600 font-black">0 ⭐</span></span>
+      </div>
+    </div>
+  </header>
+
+  <!-- ================= HERO BANNER ================= -->
+  <section class="relative overflow-hidden bg-gradient-to-b from-sky-100 via-indigo-50/40 to-slate-50 pt-8 pb-10 border-b border-slate-200">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+        
+        <div class="lg:col-span-7 space-y-4 text-center lg:text-left">
+          <div class="inline-flex items-center space-x-2 bg-white/90 border border-sky-300 px-3.5 py-1 rounded-full shadow-sm text-sky-800 text-xs font-extrabold">
+            <i class="fa-solid fa-atom text-sky-600"></i>
+            <span>Khoa học tự nhiên 7 • Danh pháp chuẩn quốc tế IUPAC</span>
+          </div>
+
+          <h1 class="text-3xl sm:text-4xl font-black text-slate-900 font-display tracking-tight leading-tight">
+            Hoá Trị &amp; Công Thức Hoá Học
+          </h1>
+
+          <p class="text-sm sm:text-base text-slate-600 font-medium leading-relaxed">
+            Học tập tương tác trực quan với tên gọi các chất chuẩn xác theo quy định CT GDPT 2018: <em>hydrogen, oxygen, nitrogen, sulfur, sodium, potassium, calcium, magnesium, copper...</em>
+          </p>
+
+          <div class="pt-2 flex flex-wrap gap-3 justify-center lg:justify-start">
+            <a href="#khoi-dong" class="px-5 py-3 rounded-2xl bg-sky-600 hover:bg-sky-500 text-white font-extrabold text-sm shadow-clay-button active:translate-y-1 transition-all">
+              🚀 Khám Phá Bài Học
+            </a>
+            <a href="#kiem-tra-20-cau" class="px-5 py-3 rounded-2xl bg-amber-500 hover:bg-amber-400 text-white font-extrabold text-sm shadow-clay-amber active:translate-y-1 transition-all">
+              📝 Làm Bài Kiểm Tra 20 Câu (10đ)
+            </a>
+          </div>
+        </div>
+
+        <!-- Molecule Illustration (Chuẩn hình học không gian & liên kết hoá học) -->
+        <div class="lg:col-span-5 flex justify-center">
+          <div class="w-full max-w-[360px] bg-white/95 rounded-3xl p-5 sm:p-6 shadow-xl border-4 border-sky-200 flex flex-col items-center justify-between">
+            <div class="flex items-center justify-between w-full border-b border-sky-100 pb-2 mb-2">
+              <span class="text-xs font-black uppercase text-sky-700 tracking-wider flex items-center">
+                <i class="fa-solid fa-atom text-sky-500 mr-1.5"></i> Mô hình liên kết phân tử
+              </span>
+              <span class="text-[10px] font-black bg-sky-100 text-sky-800 px-2 py-0.5 rounded-full">H₂O</span>
+            </div>
+
+            <!-- SVG Water Molecule: Liên kết chính xác từ tâm O tới tâm từng H -->
+            <div class="relative w-full py-1 flex items-center justify-center molecule-pulse">
+              <svg viewBox="0 0 320 220" class="w-full max-w-[290px] filter drop-shadow-md select-none">
+                <defs>
+                  <radialGradient id="gradO" cx="35%" cy="35%" r="65%">
+                    <stop offset="0%" stop-color="#fca5a5" />
+                    <stop offset="45%" stop-color="#ef4444" />
+                    <stop offset="100%" stop-color="#991b1b" />
+                  </radialGradient>
+                  <radialGradient id="gradH" cx="35%" cy="35%" r="65%">
+                    <stop offset="0%" stop-color="#e0f2fe" />
+                    <stop offset="45%" stop-color="#38bdf8" />
+                    <stop offset="100%" stop-color="#0284c7" />
+                  </radialGradient>
+                  <filter id="atomDropShadow" x="-20%" y="-20%" width="150%" height="150%">
+                    <feDropShadow dx="0" dy="6" stdDeviation="5" flood-color="#0f172a" flood-opacity="0.2" />
+                  </filter>
+                </defs>
+
+                <!-- Thanh liên kết (Bonds) nối chính xác từ tâm O(160, 68) tới tâm H(86, 148) -->
+                <line x1="160" y1="68" x2="86" y2="148" stroke="#0284c7" stroke-width="16" stroke-linecap="round" />
+                <line x1="160" y1="68" x2="86" y2="148" stroke="#38bdf8" stroke-width="12" stroke-linecap="round" />
+                <line x1="160" y1="68" x2="86" y2="148" stroke="#bae6fd" stroke-width="4" stroke-linecap="round" />
+
+                <!-- Thanh liên kết (Bonds) nối chính xác từ tâm O(160, 68) tới tâm H(234, 148) -->
+                <line x1="160" y1="68" x2="234" y2="148" stroke="#0284c7" stroke-width="16" stroke-linecap="round" />
+                <line x1="160" y1="68" x2="234" y2="148" stroke="#38bdf8" stroke-width="12" stroke-linecap="round" />
+                <line x1="160" y1="68" x2="234" y2="148" stroke="#bae6fd" stroke-width="4" stroke-linecap="round" />
+
+                <!-- Cung hiển thị góc liên kết (Góc liên kết thực tế H-O-H xấp xỉ 104,5°) -->
+                <path d="M 134 94 A 38 38 0 0 0 186 94" fill="none" stroke="#f59e0b" stroke-width="2" stroke-dasharray="3,3" />
+                <rect x="144" y="99" width="32" height="16" rx="4" fill="#fef3c7" stroke="#f59e0b" stroke-width="1" />
+                <text x="160" y="111" text-anchor="middle" fill="#b45309" font-family="Nunito, sans-serif" font-weight="900" font-size="9.5">104,5°</text>
+
+                <!-- Nguyên tử Oxygen (Trung tâm trên) -->
+                <g filter="url(#atomDropShadow)">
+                  <circle cx="160" cy="68" r="46" fill="url(#gradO)" stroke="#ffffff" stroke-width="4" />
+                  <text x="160" y="66" text-anchor="middle" fill="#ffffff" font-family="Nunito, sans-serif" font-weight="900" font-size="28">O</text>
+                  <text x="160" y="85" text-anchor="middle" fill="#ffe4e6" font-family="Nunito, sans-serif" font-weight="800" font-size="10" letter-spacing="0.5">OXYGEN (II)</text>
+                </g>
+
+                <!-- Nguyên tử Hydrogen (Bên trái) -->
+                <g filter="url(#atomDropShadow)">
+                  <circle cx="86" cy="148" r="34" fill="url(#gradH)" stroke="#ffffff" stroke-width="3.5" />
+                  <text x="86" y="146" text-anchor="middle" fill="#0f172a" font-family="Nunito, sans-serif" font-weight="900" font-size="20">H</text>
+                  <text x="86" y="163" text-anchor="middle" fill="#0369a1" font-family="Nunito, sans-serif" font-weight="800" font-size="9">hydrogen (I)</text>
+                </g>
+
+                <!-- Nguyên tử Hydrogen (Bên phải) -->
+                <g filter="url(#atomDropShadow)">
+                  <circle cx="234" cy="148" r="34" fill="url(#gradH)" stroke="#ffffff" stroke-width="3.5" />
+                  <text x="234" y="146" text-anchor="middle" fill="#0f172a" font-family="Nunito, sans-serif" font-weight="900" font-size="20">H</text>
+                  <text x="234" y="163" text-anchor="middle" fill="#0369a1" font-family="Nunito, sans-serif" font-weight="800" font-size="9">hydrogen (I)</text>
+                </g>
+              </svg>
+            </div>
+
+            <div class="w-full text-center bg-sky-50 px-3.5 py-2.5 rounded-2xl border border-sky-200 shadow-sm mt-3">
+              <p class="text-xs font-bold text-sky-950 leading-relaxed">
+                💧 Phân tử <strong>water (H<sub>2</sub>O)</strong>: 1 nguyên tử oxygen có <strong>2 cánh tay liên kết</strong> giữ chặt 2 nguyên tử hydrogen!
+              </p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= MAIN CONTENT ================= -->
+  <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-16">
+
+    <!-- ================= 0. KHỞI ĐỘNG ================= -->
+    <section id="khoi-dong" class="scroll-mt-24">
+      <div class="bg-gradient-to-br from-amber-500 via-orange-500 to-rose-500 rounded-3xl p-1 shadow-xl">
+        <div class="bg-white rounded-[22px] p-6 sm:p-8 space-y-6">
+          
+          <div class="flex items-center space-x-3 border-b border-slate-100 pb-3">
+            <div class="w-10 h-10 rounded-2xl bg-amber-100 text-amber-600 flex items-center justify-center text-xl font-black">
+              🚀
+            </div>
+            <div>
+              <span class="text-xs font-black uppercase tracking-wider text-amber-600">Khởi Động Vào Bài</span>
+              <h2 class="text-xl sm:text-2xl font-extrabold text-slate-900 font-display">
+                Bí Mật Liên Kết Trong Phân Tử Water (H<sub>2</sub>O)
+              </h2>
+            </div>
+          </div>
+
+          <div class="bg-amber-50/80 border-l-4 border-amber-500 p-4 rounded-2xl text-xs sm:text-sm text-slate-700 leading-relaxed">
+            <p class="font-bold text-amber-950">Câu hỏi gợi mở trang 1 SGK Kết nối tri thức:</p>
+            <p class="italic">"Trong phân tử water (nước), một nguyên tử oxygen liên kết với hai nguyên tử hydrogen, người ta nói rằng oxygen có hoá trị II. Vậy hoá trị có mối liên hệ với công thức hoá học của hợp chất như thế nào?"</p>
+          </div>
+
+          <!-- Trắc nghiệm khởi động nhanh -->
+          <div class="bg-slate-50 border-2 border-dashed border-sky-300 rounded-3xl p-5 text-center space-y-3">
+            <h3 class="text-sm sm:text-base font-extrabold text-slate-800">
+              💡 Dự đoán nhanh:
+            </h3>
+            <p class="text-xs sm:text-sm text-slate-600">
+              Nếu một nguyên tử <strong>oxygen (hoá trị II)</strong> liên kết với 2 nguyên tử <strong>hydrogen (hoá trị I)</strong>, thì một nguyên tử <strong>carbon (hoá trị IV)</strong> có thể liên kết với bao nhiêu nguyên tử hydrogen?
+            </p>
+
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5 max-w-lg mx-auto pt-1">
+              <button onclick="checkWarmupAnswer(2)" class="warmup-btn py-2.5 px-3 rounded-xl bg-white border border-slate-200 hover:border-sky-400 font-extrabold text-xs sm:text-sm">2 nguyên tử H</button>
+              <button onclick="checkWarmupAnswer(3)" class="warmup-btn py-2.5 px-3 rounded-xl bg-white border border-slate-200 hover:border-sky-400 font-extrabold text-xs sm:text-sm">3 nguyên tử H</button>
+              <button onclick="checkWarmupAnswer(4)" class="warmup-btn py-2.5 px-3 rounded-xl bg-white border border-slate-200 hover:border-sky-400 font-extrabold text-xs sm:text-sm">4 nguyên tử H</button>
+              <button onclick="checkWarmupAnswer(1)" class="warmup-btn py-2.5 px-3 rounded-xl bg-white border border-slate-200 hover:border-sky-400 font-extrabold text-xs sm:text-sm">1 nguyên tử H</button>
+            </div>
+
+            <div id="warmupFeedback" class="hidden max-w-lg mx-auto p-3.5 rounded-2xl text-xs sm:text-sm font-bold"></div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= I. CÔNG THỨC HOÁ HỌC ================= -->
+    <section id="cong-thuc" class="scroll-mt-24 space-y-6">
+      <div class="flex items-center space-x-3 border-b-2 border-sky-500 pb-2">
+        <div class="w-10 h-10 rounded-2xl bg-sky-500 text-white flex items-center justify-center text-xl font-black">
+          I
+        </div>
+        <div>
+          <span class="text-xs font-black uppercase text-sky-600">Trọng tâm 1</span>
+          <h2 class="text-xl sm:text-2xl font-extrabold text-slate-900 font-display">Công Thức Hoá Học</h2>
+        </div>
+      </div>
+
+      <!-- Thẻ kiến thức Đơn chất vs Hợp chất -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div class="bg-white rounded-3xl p-6 shadow-clay border border-slate-200 space-y-3">
+          <span class="bg-sky-100 text-sky-800 text-xs font-black px-2.5 py-0.5 rounded-full uppercase">1. Định nghĩa &amp; Đơn chất</span>
+          <h3 class="text-lg font-black text-slate-900">Cách Viết CTHH Đơn Chất</h3>
+          <p class="text-xs sm:text-sm text-slate-600 leading-relaxed">
+            Công thức hoá học biểu diễn chất bằng kí hiệu hoá học kèm chỉ số ở chân bên phải.
+          </p>
+          <ul class="text-xs sm:text-sm space-y-2 text-slate-700">
+            <li class="p-2.5 rounded-xl bg-slate-50 border border-slate-200">
+              <strong>Đơn chất kim loại &amp; một số phi kim:</strong> Kí hiệu hoá học chính là CTHH.
+              <br><span class="text-sky-700 font-bold">copper (Cu), iron (Fe), sodium (Na), potassium (K), helium (He), carbon (C), sulfur (S)...</span>
+            </li>
+            <li class="p-2.5 rounded-xl bg-slate-50 border border-slate-200">
+              <strong>Phi kim thể khí:</strong> Kèm chỉ số 2 hoặc 3 ở chân.
+              <br><span class="text-sky-700 font-bold">hydrogen (H<sub>2</sub>), oxygen (O<sub>2</sub>), nitrogen (N<sub>2</sub>), ozone (O<sub>3</sub>)...</span>
+            </li>
+          </ul>
+        </div>
+
+        <div class="bg-white rounded-3xl p-6 shadow-clay border border-slate-200 space-y-3">
+          <span class="bg-indigo-100 text-indigo-800 text-xs font-black px-2.5 py-0.5 rounded-full uppercase">2. CTHH Hợp chất</span>
+          <h3 class="text-lg font-black text-slate-900">Hợp Chất &amp; Ý Nghĩa CTHH</h3>
+          <p class="text-xs sm:text-sm text-slate-600 leading-relaxed">
+            CTHH hợp chất gồm kí hiệu các nguyên tố kèm chỉ số số nguyên ở chân bên phải. <strong>Chỉ số 1 thì không ghi!</strong>
+          </p>
+          <div class="p-3 bg-indigo-50/70 rounded-2xl border border-indigo-200 text-xs sm:text-sm space-y-1.5">
+            <p class="font-extrabold text-indigo-900">Ví dụ: Calcium carbonate (CaCO<sub>3</sub>) cho biết:</p>
+            <div>🔹 Tạo nên từ 3 nguyên tố: <strong>calcium, carbon, oxygen</strong>.</div>
+            <div>🔹 Tỉ lệ số nguyên tử: <strong>1 Ca : 1 C : 3 O</strong> (1 : 1 : 3).</div>
+            <div>🔹 Khối lượng phân tử: <strong>40 + 12 + 3 × 16 = 100 amu</strong>.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Máy tính % khối lượng IUPAC tương tác -->
+      <div class="bg-white rounded-3xl p-6 shadow-clay border border-slate-200 space-y-4">
+        <div class="flex items-center justify-between flex-wrap gap-2">
+          <div>
+            <span class="text-xs font-black text-emerald-600 uppercase">Công cụ tương tác</span>
+            <h3 class="text-lg font-extrabold text-slate-900">Máy Tính % Khối Lượng Nguyên Tố (Theo Tên IUPAC)</h3>
+          </div>
+          <span class="text-xs bg-emerald-100 text-emerald-800 font-bold px-3 py-1 rounded-full">Chuẩn SGK Trang 1</span>
+        </div>
+
+        <div class="flex flex-wrap gap-2" id="compoundSelector">
+          <button onclick="calculateCompound('KNO3')" class="calc-btn active px-3.5 py-2 rounded-xl bg-emerald-600 text-white text-xs font-extrabold shadow-sm">
+            Potassium nitrate (KNO<sub>3</sub>)
+          </button>
+          <button onclick="calculateCompound('CaCO3')" class="calc-btn px-3.5 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-extrabold">
+            Calcium carbonate (CaCO<sub>3</sub>)
+          </button>
+          <button onclick="calculateCompound('CuSO4')" class="calc-btn px-3.5 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-extrabold">
+            Copper(II) sulfate (CuSO<sub>4</sub>)
+          </button>
+          <button onclick="calculateCompound('CH4')" class="calc-btn px-3.5 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-extrabold">
+            Methane (CH<sub>4</sub>)
+          </button>
+        </div>
+
+        <div id="compoundCalcResult" class="bg-slate-50 rounded-2xl p-4 border border-slate-200 space-y-3"></div>
+      </div>
+    </section>
+
+    <!-- ================= II. HOÁ TRỊ VÀ QUY TẮC HOÁ TRỊ ================= -->
+    <section id="hoa-tri" class="scroll-mt-24 space-y-6">
+      <div class="flex items-center space-x-3 border-b-2 border-indigo-500 pb-2">
+        <div class="w-10 h-10 rounded-2xl bg-indigo-500 text-white flex items-center justify-center text-xl font-black">
+          II
+        </div>
+        <div>
+          <span class="text-xs font-black uppercase text-indigo-600">Trọng tâm 2</span>
+          <h2 class="text-xl sm:text-2xl font-extrabold text-slate-900 font-display">Hoá Trị &amp; Quy Tắc Hoá Trị</h2>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div class="bg-white rounded-3xl p-6 shadow-clay border border-slate-200 space-y-3">
+          <h3 class="text-base font-extrabold text-slate-900 flex items-center">
+            <i class="fa-solid fa-atom text-indigo-600 mr-2"></i> Khái Niệm Hoá Trị
+          </h3>
+          <p class="text-xs sm:text-sm text-slate-600 leading-relaxed">
+            Trong chất cộng hoá trị, <strong>hoá trị của nguyên tố được xác định bằng số cặp electron dùng chung</strong> của nguyên tử nguyên tố đó với nguyên tử khác.
+          </p>
+          <div class="p-3 bg-indigo-50 rounded-2xl text-xs text-indigo-950 space-y-1">
+            <div>• Phân tử <strong>hydrochloric acid (HCl)</strong>: 1 cặp e chung ➔ <strong>chlorine hoá trị I</strong>.</div>
+            <div>• Phân tử <strong>water (H<sub>2</sub>O)</strong>: 2 cặp e chung với 2 H ➔ <strong>oxygen hoá trị II</strong>.</div>
+          </div>
+        </div>
+
+        <div class="bg-white rounded-3xl p-6 shadow-clay border border-slate-200 space-y-3">
+          <h3 class="text-base font-extrabold text-slate-900 flex items-center">
+            <i class="fa-solid fa-scale-balanced text-emerald-600 mr-2"></i> Quy Tắc Hoá Trị
+          </h3>
+          <div class="p-3 bg-emerald-50 rounded-2xl border border-emerald-200 text-center">
+            <span class="text-xs uppercase font-extrabold text-emerald-800">Biểu thức vàng:</span>
+            <div class="text-2xl font-black text-slate-900 font-mono mt-0.5">
+              x · a = y · b
+            </div>
+            <p class="text-[11px] text-slate-600 mt-1">
+              "Trong hợp chất 2 nguyên tố, tích chỉ số và hoá trị của nguyên tố này bằng tích chỉ số và hoá trị của nguyên tố kia."
+            </p>
+          </div>
+          <p class="text-xs text-slate-500 font-semibold">
+            📌 Quy ước: <strong>hydrogen luôn hoá trị I</strong>, <strong>oxygen luôn hoá trị II</strong>.
+          </p>
+        </div>
+      </div>
+
+      <!-- Bảng tra cứu IUPAC Bảng 7.2 & 7.3 -->
+      <div class="bg-white rounded-3xl p-6 shadow-clay border border-slate-200 space-y-4">
+        <div class="flex items-center justify-between flex-wrap gap-2">
+          <h3 class="text-base font-extrabold text-slate-900">
+            Bảng Tra Cứu Hoá Trị Theo Danh Pháp Quốc Tế IUPAC (Bảng 7.2 &amp; 7.3 SGK)
+          </h3>
+          <input type="text" id="valencySearchInput" oninput="filterValencyTable()" placeholder="Gõ tên hoặc KHHH..." class="px-3 py-1.5 text-xs rounded-xl border border-slate-200 focus:outline-none focus:border-sky-500 font-bold" />
+        </div>
+
+        <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2.5" id="valencyGrid"></div>
+      </div>
+    </section>
+
+    <!-- ================= III. LẬP CÔNG THỨC HOÁ HỌC ================= -->
+    <section id="lap-cong-thuc" class="scroll-mt-24 space-y-6">
+      <div class="flex items-center space-x-3 border-b-2 border-emerald-500 pb-2">
+        <div class="w-10 h-10 rounded-2xl bg-emerald-500 text-white flex items-center justify-center text-xl font-black">
+          III
+        </div>
+        <div>
+          <span class="text-xs font-black uppercase text-emerald-600">Trọng tâm 3</span>
+          <h2 class="text-xl sm:text-2xl font-extrabold text-slate-900 font-display">Lập Công Thức Hoá Học</h2>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div class="bg-white rounded-3xl p-5 shadow-clay border border-slate-200 space-y-2.5">
+          <span class="text-xs font-black text-emerald-700 bg-emerald-50 px-2.5 py-0.5 rounded-full">Cách 1: Khi biết hoá trị</span>
+          <h4 class="font-extrabold text-slate-900 text-sm">Ví dụ: Hợp chất của sulfur (IV) và oxygen (II)</h4>
+          <div class="text-xs text-slate-700 space-y-1 bg-slate-50 p-3 rounded-2xl border border-slate-200">
+            <div>1. Viết dạng chung: <code>S<sub>x</sub><sup>IV</sup>O<sub>y</sub><sup>II</sup></code></div>
+            <div>2. Quy tắc hoá trị: <code>x · IV = y · II ➔ x / y = II / IV = 1 / 2</code></div>
+            <div>3. Chọn <code>x = 1, y = 2</code> ➔ CTHH là: <strong class="text-emerald-700 text-sm">SO<sub>2</sub></strong> (sulfur dioxide).</div>
+          </div>
+        </div>
+
+        <div class="bg-white rounded-3xl p-5 shadow-clay border border-slate-200 space-y-2.5">
+          <span class="text-xs font-black text-sky-700 bg-sky-50 px-2.5 py-0.5 rounded-full">Cách 2: Theo % khối lượng</span>
+          <h4 class="font-extrabold text-slate-900 text-sm">Ví dụ: Hợp chất gồm C và H (75% C, 25% H, KLPT = 16 amu)</h4>
+          <div class="text-xs text-slate-700 space-y-1 bg-slate-50 p-3 rounded-2xl border border-slate-200">
+            <div>1. Viết dạng chung: <code>C<sub>x</sub>H<sub>y</sub></code></div>
+            <div>2. Tìm x: <code>x = (16 · 75%) / (12 · 100%) = 1</code></div>
+            <div>3. Tìm y: <code>y = (16 · 25%) / (1 · 100%) = 4</code> ➔ CTHH là: <strong class="text-sky-700 text-sm">CH<sub>4</sub></strong> (methane).</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= BÀI KIỂM TRA ĐÁNH GIÁ 20 CÂU (THANG ĐIỂM 10) ================= -->
+    <section id="kiem-tra-20-cau" class="scroll-mt-24 space-y-6">
+      <div class="bg-gradient-to-r from-sky-600 via-indigo-600 to-emerald-600 rounded-3xl p-1 shadow-2xl">
+        <div class="bg-white rounded-[22px] p-6 sm:p-8 space-y-8">
+          
+          <!-- Exam Header -->
+          <div class="flex flex-col sm:flex-row items-center justify-between gap-4 border-b border-slate-100 pb-5">
+            <div class="flex items-center space-x-3.5">
+              <div class="w-14 h-14 rounded-3xl bg-amber-100 text-amber-600 flex items-center justify-center text-3xl shadow-inner">
+                📝
+              </div>
+              <div>
+                <div class="flex items-center space-x-2">
+                  <span class="text-xs font-black uppercase tracking-wider text-amber-600 bg-amber-50 px-2 py-0.5 rounded-md border border-amber-200">Bài Kiểm Tra Đánh Giá</span>
+                  <span class="text-xs font-bold text-slate-500">20 câu • Thang điểm 10,0</span>
+                </div>
+                <h2 class="text-2xl sm:text-3xl font-black text-slate-900 font-display">
+                  Kiểm Tra Kiến Thức Bài 7 (KHTN 7)
+                </h2>
+                <p class="text-xs text-slate-600">Trắc nghiệm 16 câu (4 hình thức đổi mới, mỗi câu 0,5đ) + Tự luận 4 câu (mỗi câu 0,5đ)</p>
+              </div>
+            </div>
+
+            <!-- Current Candidate Badge -->
+            <div class="bg-sky-50 border border-sky-200 px-4 py-2.5 rounded-2xl text-right">
+              <span class="text-[11px] text-slate-500 font-bold block">Thí sinh đang làm bài:</span>
+              <span id="examCandidateName" class="text-sm font-extrabold text-sky-900 block truncate">Học sinh</span>
+              <span id="examCandidateClass" class="text-xs text-sky-700 font-bold block">Lớp: --</span>
+            </div>
+          </div>
+
+          <!-- Exam Progress Bar -->
+          <div class="space-y-1.5">
+            <div class="flex justify-between text-xs font-black text-slate-600">
+              <span>Tiến độ làm bài kiểm tra:</span>
+              <span id="examAnsweredCountText" class="text-sky-600">Đã trả lời: 0 / 20 câu</span>
+            </div>
+            <div class="w-full bg-slate-100 h-2.5 rounded-full overflow-hidden">
+              <div id="examProgressBar" class="bg-gradient-to-r from-amber-500 to-emerald-500 h-full w-0 transition-all duration-300"></div>
+            </div>
+          </div>
+
+          <!-- EXAM QUESTIONS FORM -->
+          <form id="fullExamForm" onsubmit="submitExam(event)" class="space-y-10">
+
+            <!-- ================= PHẦN 1: TRẮC NGHIỆM 4 LỰA CHỌN (CÂU 1 - 4) ================= -->
+            <div class="space-y-4">
+              <div class="flex items-center justify-between bg-sky-50 p-3 rounded-2xl border border-sky-200">
+                <span class="text-xs sm:text-sm font-black text-sky-900 uppercase">
+                  🔹 Phần 1: Trắc Nghiệm 4 Lựa Chọn (Câu 1 đến Câu 4 • 2,0 điểm)
+                </span>
+                <span class="text-xs bg-sky-200/70 text-sky-800 font-bold px-2 py-0.5 rounded-md">0,5 đ / câu</span>
+              </div>
+
+              <!-- Câu 1 -->
+              <div class="p-4 sm:p-5 rounded-2xl bg-slate-50 border border-slate-200 space-y-3">
+                <p class="font-extrabold text-sm text-slate-800">
+                  Câu 1. Trong công thức hoá học của khí carbon dioxide (CO<sub>2</sub>), chỉ số "2" ở chân bên phải kí hiệu O cho biết điều gì?
+                </p>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs sm:text-sm">
+                  <label class="p-3 rounded-xl bg-white border border-slate-200 flex items-center space-x-2.5 cursor-pointer hover:border-sky-400">
+                    <input type="radio" name="q1" value="A" onchange="updateExamProgress()" class="text-sky-600">
+                    <span>A. Có 2 nguyên tử oxygen trong 1 phân tử carbon dioxide</span>
+                  </label>
+                  <label class="p-3 rounded-xl bg-white border border-slate-200 flex items-center space-x-2.5 cursor-pointer hover:border-sky-400">
+                    <input type="radio" name="q1" value="B" onchange="updateExamProgress()" class="text-sky-600">
+                    <span>B. Có 2 nguyên tử carbon trong 1 phân tử carbon dioxide</span>
+                  </label>
+                  <label class="p-3 rounded-xl bg-white border border-slate-200 flex items-center space-x-2.5 cursor-pointer hover:border-sky-400">
+                    <input type="radio" name="q1" value="C" onchange="updateExamProgress()" class="text-sky-600">
+                    <span>C. Nguyên tố oxygen có hoá trị II</span>
+                  </label>
+                  <label class="p-3 rounded-xl bg-white border border-slate-200 flex items-center space-x-2.5 cursor-pointer hover:border-sky-400">
+                    <input type="radio" name="q1" value="D" onchange="updateExamProgress()" class="text-sky-600">
+                    <span>D. Khối lượng của oxygen là 2 amu</span>
+                  </label>
+                </div>
+                <div id="q1Feedback" class="hidden text-xs font-bold p-2.5 rounded-xl"></div>
+              </div>
+
+              <!-- Câu 2 -->
+              <div class="p-4 sm:p-5 rounded-2xl bg-slate-50 border border-slate-200 space-y-3">
+                <p class="font-extrabold text-sm text-slate-800">
+                  Câu 2. Khối lượng phân tử của hợp chất calcium carbonate (CaCO<sub>3</sub>) là bao nhiêu amu? (Biết Ca = 40, C = 12, O = 16 amu).
+                </p>
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-xs sm:text-sm">
+                  <label class="p-3 rounded-xl bg-white border border-slate-200 flex items-center space-x-2.5 cursor-pointer hover:border-sky-400">
+                    <input type="radio" name="q2" value="A" onchange="updateExamProgress()" class="text-sky-600">
+                    <span>A. 68 amu</span>
+                  </label>
+                  <label class="p-3 rounded-xl bg-white border border-slate-200 flex items-center space-x-2.5 cursor-pointer hover:border-sky-400">
+                    <input type="radio" name="q2" value="B" onchange="updateExamProgress()" class="text-sky-600">
+                    <span>B. 84 amu</span>
+                  </label>
+                  <label class="p-3 rounded-xl bg-white border border-slate-200 flex items-center space-x-2.5 cursor-pointer hover:border-sky-400">
+                    <input type="radio" name="q2" value="C" onchange="updateExamProgress()" class="text-sky-600">
+                    <span>C. 100 amu</span>
+                  </label>
+                  <label class="p-3 rounded-xl bg-white border border-slate-200 flex items-center space-x-2.5 cursor-pointer hover:border-sky-400">
+                    <input type="radio" name="q2" value="D" onchange="updateExamProgress()" class="text-sky-600">
+                    <span>D. 120 amu</span>
+                  </label>
+                </div>
+                <div id="q2Feedback" class="hidden text-xs font-bold p-2.5 rounded-xl"></div>
+              </div>
+
+              <!-- Câu 3 -->
+              <div class="p-4 sm:p-5 rounded-2xl bg-slate-50 border border-slate-200 space-y-3">
+                <p class="font-extrabold text-sm text-slate-800">
+                  Câu 3. Trong phân bón potassium nitrate (KNO<sub>3</sub>, KLPT = 101 amu), phần trăm khối lượng của nguyên tố potassium (K = 39 amu) xấp xỉ bằng:
+                </p>
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-xs sm:text-sm">
+                  <label class="p-3 rounded-xl bg-white border border-slate-200 flex items-center space-x-2.5 cursor-pointer hover:border-sky-400">
+                    <input type="radio" name="q3" value="A" onchange="updateExamProgress()" class="text-sky-600">
+                    <span>A. 13,9%</span>
+                  </label>
+                  <label class="p-3 rounded-xl bg-white border border-slate-200 flex items-center space-x-2.5 cursor-pointer hover:border-sky-400">
+                    <input type="radio" name="q3" value="B" onchange="updateExamProgress()" class="text-sky-600">
+                    <span>B. 38,6%</span>
+                  </label>
+                  <label class="p-3 rounded-xl bg-white border border-slate-200 flex items-center space-x-2.5 cursor-pointer hover:border-sky-400">
+                    <input type="radio" name="q3" value="C" onchange="updateExamProgress()" class="text-sky-600">
+                    <span>C. 47,5%</span>
+                  </label>
+                  <label class="p-3 rounded-xl bg-white border border-slate-200 flex items-center space-x-2.5 cursor-pointer hover:border-sky-400">
+                    <input type="radio" name="q3" value="D" onchange="updateExamProgress()" class="text-sky-600">
+                    <span>D. 52,1%</span>
+                  </label>
+                </div>
+                <div id="q3Feedback" class="hidden text-xs font-bold p-2.5 rounded-xl"></div>
+              </div>
+
+              <!-- Câu 4 -->
+              <div class="p-4 sm:p-5 rounded-2xl bg-slate-50 border border-slate-200 space-y-3">
+                <p class="font-extrabold text-sm text-slate-800">
+                  Câu 4. Dựa vào quy tắc hoá trị, trong hợp chất sulfur dioxide (SO<sub>2</sub>), nguyên tố sulfur có hoá trị là:
+                </p>
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-xs sm:text-sm">
+                  <label class="p-3 rounded-xl bg-white border border-slate-200 flex items-center space-x-2.5 cursor-pointer hover:border-sky-400">
+                    <input type="radio" name="q4" value="A" onchange="updateExamProgress()" class="text-sky-600">
+                    <span>A. Hoá trị II</span>
+                  </label>
+                  <label class="p-3 rounded-xl bg-white border border-slate-200 flex items-center space-x-2.5 cursor-pointer hover:border-sky-400">
+                    <input type="radio" name="q4" value="B" onchange="updateExamProgress()" class="text-sky-600">
+                    <span>B. Hoá trị IV</span>
+                  </label>
+                  <label class="p-3 rounded-xl bg-white border border-slate-200 flex items-center space-x-2.5 cursor-pointer hover:border-sky-400">
+                    <input type="radio" name="q4" value="C" onchange="updateExamProgress()" class="text-sky-600">
+                    <span>C. Hoá trị VI</span>
+                  </label>
+                  <label class="p-3 rounded-xl bg-white border border-slate-200 flex items-center space-x-2.5 cursor-pointer hover:border-sky-400">
+                    <input type="radio" name="q4" value="D" onchange="updateExamProgress()" class="text-sky-600">
+                    <span>D. Hoá trị I</span>
+                  </label>
+                </div>
+                <div id="q4Feedback" class="hidden text-xs font-bold p-2.5 rounded-xl"></div>
+              </div>
+            </div>
+
+            <!-- ================= PHẦN 2: TRẮC NGHIỆM ĐÚNG / SAI (CÂU 5 - 8) ================= -->
+            <div class="space-y-4">
+              <div class="flex items-center justify-between bg-indigo-50 p-3 rounded-2xl border border-indigo-200">
+                <span class="text-xs sm:text-sm font-black text-indigo-900 uppercase">
+                  🔹 Phần 2: Trắc Nghiệm Đúng / Sai (Câu 5 đến Câu 8 • 2,0 điểm)
+                </span>
+                <span class="text-xs bg-indigo-200/70 text-indigo-800 font-bold px-2 py-0.5 rounded-md">0,5 đ / câu</span>
+              </div>
+
+              <!-- Câu 5 -->
+              <div class="p-4 sm:p-5 rounded-2xl bg-slate-50 border border-slate-200 space-y-3">
+                <p class="font-extrabold text-sm text-slate-800">
+                  Câu 5. "Trong chất cộng hoá trị, hoá trị của một nguyên tố được xác định bằng số cặp electron dùng chung của nguyên tử nguyên tố đó với nguyên tử khác."
+                </p>
+                <div class="flex space-x-3 text-xs sm:text-sm">
+                  <label class="px-5 py-2.5 rounded-xl bg-white border border-slate-200 flex items-center space-x-2 cursor-pointer hover:border-indigo-500 font-bold">
+                    <input type="radio" name="q5" value="DUNG" onchange="updateExamProgress()" class="text-indigo-600">
+                    <span>✅ ĐÚNG</span>
+                  </label>
+                  <label class="px-5 py-2.5 rounded-xl bg-white border border-slate-200 flex items-center space-x-2 cursor-pointer hover:border-rose-500 font-bold">
+                    <input type="radio" name="q5" value="SAI" onchange="updateExamProgress()" class="text-indigo-600">
+                    <span>❌ SAI</span>
+                  </label>
+                </div>
+                <div id="q5Feedback" class="hidden text-xs font-bold p-2.5 rounded-xl"></div>
+              </div>
+
+              <!-- Câu 6 -->
+              <div class="p-4 sm:p-5 rounded-2xl bg-slate-50 border border-slate-200 space-y-3">
+                <p class="font-extrabold text-sm text-slate-800">
+                  Câu 6. "Đơn chất kim loại như copper, iron, sodium có công thức hoá học luôn kèm theo chỉ số 2 ở chân bên phải (ví dụ Cu<sub>2</sub>, Fe<sub>2</sub>, Na<sub>2</sub>)."
+                </p>
+                <div class="flex space-x-3 text-xs sm:text-sm">
+                  <label class="px-5 py-2.5 rounded-xl bg-white border border-slate-200 flex items-center space-x-2 cursor-pointer hover:border-indigo-500 font-bold">
+                    <input type="radio" name="q6" value="DUNG" onchange="updateExamProgress()" class="text-indigo-600">
+                    <span>✅ ĐÚNG</span>
+                  </label>
+                  <label class="px-5 py-2.5 rounded-xl bg-white border border-slate-200 flex items-center space-x-2 cursor-pointer hover:border-rose-500 font-bold">
+                    <input type="radio" name="q6" value="SAI" onchange="updateExamProgress()" class="text-indigo-600">
+                    <span>❌ SAI</span>
+                  </label>
+                </div>
+                <div id="q6Feedback" class="hidden text-xs font-bold p-2.5 rounded-xl"></div>
+              </div>
+
+              <!-- Câu 7 -->
+              <div class="p-4 sm:p-5 rounded-2xl bg-slate-50 border border-slate-200 space-y-3">
+                <p class="font-extrabold text-sm text-slate-800">
+                  Câu 7. "Theo quy ước quốc tế trong chương trình KHTN 7: nguyên tố hydrogen luôn có hoá trị I, nguyên tố oxygen luôn có hoá trị II."
+                </p>
+                <div class="flex space-x-3 text-xs sm:text-sm">
+                  <label class="px-5 py-2.5 rounded-xl bg-white border border-slate-200 flex items-center space-x-2 cursor-pointer hover:border-indigo-500 font-bold">
+                    <input type="radio" name="q7" value="DUNG" onchange="updateExamProgress()" class="text-indigo-600">
+                    <span>✅ ĐÚNG</span>
+                  </label>
+                  <label class="px-5 py-2.5 rounded-xl bg-white border border-slate-200 flex items-center space-x-2 cursor-pointer hover:border-rose-500 font-bold">
+                    <input type="radio" name="q7" value="SAI" onchange="updateExamProgress()" class="text-indigo-600">
+                    <span>❌ SAI</span>
+                  </label>
+                </div>
+                <div id="q7Feedback" class="hidden text-xs font-bold p-2.5 rounded-xl"></div>
+              </div>
+
+              <!-- Câu 8 -->
+              <div class="p-4 sm:p-5 rounded-2xl bg-slate-50 border border-slate-200 space-y-3">
+                <p class="font-extrabold text-sm text-slate-800">
+                  Câu 8. "Dựa vào quy tắc hoá trị, công thức hoá học của hợp chất tạo bởi potassium (hoá trị I) và oxygen (hoá trị II) là KO."
+                </p>
+                <div class="flex space-x-3 text-xs sm:text-sm">
+                  <label class="px-5 py-2.5 rounded-xl bg-white border border-slate-200 flex items-center space-x-2 cursor-pointer hover:border-indigo-500 font-bold">
+                    <input type="radio" name="q8" value="DUNG" onchange="updateExamProgress()" class="text-indigo-600">
+                    <span>✅ ĐÚNG</span>
+                  </label>
+                  <label class="px-5 py-2.5 rounded-xl bg-white border border-slate-200 flex items-center space-x-2 cursor-pointer hover:border-rose-500 font-bold">
+                    <input type="radio" name="q8" value="SAI" onchange="updateExamProgress()" class="text-indigo-600">
+                    <span>❌ SAI</span>
+                  </label>
+                </div>
+                <div id="q8Feedback" class="hidden text-xs font-bold p-2.5 rounded-xl"></div>
+              </div>
+            </div>
+
+            <!-- ================= PHẦN 3: TRẮC NGHIỆM GHÉP ĐÔI (CÂU 9 - 12) ================= -->
+            <div class="space-y-4">
+              <div class="flex items-center justify-between bg-violet-50 p-3 rounded-2xl border border-violet-200">
+                <span class="text-xs sm:text-sm font-black text-violet-900 uppercase">
+                  🔹 Phần 3: Trắc Nghiệm Ghép Đôi Tương Ứng (Câu 9 đến Câu 12 • 2,0 điểm)
+                </span>
+                <span class="text-xs bg-violet-200/70 text-violet-800 font-bold px-2 py-0.5 rounded-md">0,5 đ / câu</span>
+              </div>
+
+              <!-- Câu 9 -->
+              <div class="p-4 sm:p-5 rounded-2xl bg-slate-50 border border-slate-200 space-y-3">
+                <p class="font-extrabold text-sm text-slate-800">
+                  Câu 9. Hãy ghép mỗi nguyên tố hoá học ở cột bên trái với hoá trị tương ứng ở cột bên phải:
+                </p>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs sm:text-sm">
+                  <div class="flex items-center justify-between bg-white p-2.5 rounded-xl border border-slate-200">
+                    <span class="font-bold">1. Sodium (Na)</span>
+                    <select id="q9_1" onchange="updateExamProgress()" class="p-1 rounded-lg border font-bold text-violet-700 bg-violet-50 text-xs">
+                      <option value="">Chọn...</option>
+                      <option value="I">Hoá trị I</option>
+                      <option value="II">Hoá trị II</option>
+                      <option value="III">Hoá trị III</option>
+                    </select>
+                  </div>
+                  <div class="flex items-center justify-between bg-white p-2.5 rounded-xl border border-slate-200">
+                    <span class="font-bold">2. Aluminium (Al)</span>
+                    <select id="q9_2" onchange="updateExamProgress()" class="p-1 rounded-lg border font-bold text-violet-700 bg-violet-50 text-xs">
+                      <option value="">Chọn...</option>
+                      <option value="I">Hoá trị I</option>
+                      <option value="II">Hoá trị II</option>
+                      <option value="III">Hoá trị III</option>
+                    </select>
+                  </div>
+                  <div class="flex items-center justify-between bg-white p-2.5 rounded-xl border border-slate-200">
+                    <span class="font-bold">3. Magnesium (Mg)</span>
+                    <select id="q9_3" onchange="updateExamProgress()" class="p-1 rounded-lg border font-bold text-violet-700 bg-violet-50 text-xs">
+                      <option value="">Chọn...</option>
+                      <option value="I">Hoá trị I</option>
+                      <option value="II">Hoá trị II</option>
+                      <option value="III">Hoá trị III</option>
+                    </select>
+                  </div>
+                  <div class="flex items-center justify-between bg-white p-2.5 rounded-xl border border-slate-200">
+                    <span class="font-bold">4. Silicon (Si)</span>
+                    <select id="q9_4" onchange="updateExamProgress()" class="p-1 rounded-lg border font-bold text-violet-700 bg-violet-50 text-xs">
+                      <option value="">Chọn...</option>
+                      <option value="II">Hoá trị II</option>
+                      <option value="IV">Hoá trị IV</option>
+                      <option value="VI">Hoá trị VI</option>
+                    </select>
+                  </div>
+                </div>
+                <div id="q9Feedback" class="hidden text-xs font-bold p-2.5 rounded-xl"></div>
+              </div>
+
+              <!-- Câu 10 -->
+              <div class="p-4 sm:p-5 rounded-2xl bg-slate-50 border border-slate-200 space-y-3">
+                <p class="font-extrabold text-sm text-slate-800">
+                  Câu 10. Hãy ghép mỗi nhóm nguyên tử sau với hoá trị tương ứng (theo Bảng 7.3 SGK):
+                </p>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs sm:text-sm">
+                  <div class="flex items-center justify-between bg-white p-2.5 rounded-xl border border-slate-200">
+                    <span class="font-bold">1. Hydroxide (OH)</span>
+                    <select id="q10_1" onchange="updateExamProgress()" class="p-1 rounded-lg border font-bold text-violet-700 bg-violet-50 text-xs">
+                      <option value="">Chọn...</option>
+                      <option value="I">Hoá trị I</option>
+                      <option value="II">Hoá trị II</option>
+                      <option value="III">Hoá trị III</option>
+                    </select>
+                  </div>
+                  <div class="flex items-center justify-between bg-white p-2.5 rounded-xl border border-slate-200">
+                    <span class="font-bold">2. Sulfate (SO<sub>4</sub>)</span>
+                    <select id="q10_2" onchange="updateExamProgress()" class="p-1 rounded-lg border font-bold text-violet-700 bg-violet-50 text-xs">
+                      <option value="">Chọn...</option>
+                      <option value="I">Hoá trị I</option>
+                      <option value="II">Hoá trị II</option>
+                      <option value="III">Hoá trị III</option>
+                    </select>
+                  </div>
+                  <div class="flex items-center justify-between bg-white p-2.5 rounded-xl border border-slate-200">
+                    <span class="font-bold">3. Nitrate (NO<sub>3</sub>)</span>
+                    <select id="q10_3" onchange="updateExamProgress()" class="p-1 rounded-lg border font-bold text-violet-700 bg-violet-50 text-xs">
+                      <option value="">Chọn...</option>
+                      <option value="I">Hoá trị I</option>
+                      <option value="II">Hoá trị II</option>
+                      <option value="III">Hoá trị III</option>
+                    </select>
+                  </div>
+                  <div class="flex items-center justify-between bg-white p-2.5 rounded-xl border border-slate-200">
+                    <span class="font-bold">4. Phosphate (PO<sub>4</sub>)</span>
+                    <select id="q10_4" onchange="updateExamProgress()" class="p-1 rounded-lg border font-bold text-violet-700 bg-violet-50 text-xs">
+                      <option value="">Chọn...</option>
+                      <option value="I">Hoá trị I</option>
+                      <option value="II">Hoá trị II</option>
+                      <option value="III">Hoá trị III</option>
+                    </select>
+                  </div>
+                </div>
+                <div id="q10Feedback" class="hidden text-xs font-bold p-2.5 rounded-xl"></div>
+              </div>
+
+              <!-- Câu 11 -->
+              <div class="p-4 sm:p-5 rounded-2xl bg-slate-50 border border-slate-200 space-y-3">
+                <p class="font-extrabold text-sm text-slate-800">
+                  Câu 11. Ghép công thức hoá học của chất với tên gọi quốc tế IUPAC tương ứng:
+                </p>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs sm:text-sm">
+                  <div class="flex items-center justify-between bg-white p-2.5 rounded-xl border border-slate-200">
+                    <span class="font-bold">1. NaCl</span>
+                    <select id="q11_1" onchange="updateExamProgress()" class="p-1 rounded-lg border font-bold text-violet-700 bg-violet-50 text-xs">
+                      <option value="">Chọn...</option>
+                      <option value="sodium_chloride">Sodium chloride</option>
+                      <option value="methane">Methane</option>
+                      <option value="copper_sulfate">Copper(II) sulfate</option>
+                    </select>
+                  </div>
+                  <div class="flex items-center justify-between bg-white p-2.5 rounded-xl border border-slate-200">
+                    <span class="font-bold">2. CH<sub>4</sub></span>
+                    <select id="q11_2" onchange="updateExamProgress()" class="p-1 rounded-lg border font-bold text-violet-700 bg-violet-50 text-xs">
+                      <option value="">Chọn...</option>
+                      <option value="sodium_chloride">Sodium chloride</option>
+                      <option value="methane">Methane</option>
+                      <option value="copper_sulfate">Copper(II) sulfate</option>
+                    </select>
+                  </div>
+                  <div class="flex items-center justify-between bg-white p-2.5 rounded-xl border border-slate-200">
+                    <span class="font-bold">3. CuSO<sub>4</sub></span>
+                    <select id="q11_3" onchange="updateExamProgress()" class="p-1 rounded-lg border font-bold text-violet-700 bg-violet-50 text-xs">
+                      <option value="">Chọn...</option>
+                      <option value="sodium_chloride">Sodium chloride</option>
+                      <option value="methane">Methane</option>
+                      <option value="copper_sulfate">Copper(II) sulfate</option>
+                    </select>
+                  </div>
+                  <div class="flex items-center justify-between bg-white p-2.5 rounded-xl border border-slate-200">
+                    <span class="font-bold">4. H<sub>2</sub>S</span>
+                    <select id="q11_4" onchange="updateExamProgress()" class="p-1 rounded-lg border font-bold text-violet-700 bg-violet-50 text-xs">
+                      <option value="">Chọn...</option>
+                      <option value="hydrogen_sulfide">Hydrogen sulfide</option>
+                      <option value="methane">Methane</option>
+                      <option value="water">Water</option>
+                    </select>
+                  </div>
+                </div>
+                <div id="q11Feedback" class="hidden text-xs font-bold p-2.5 rounded-xl"></div>
+              </div>
+
+              <!-- Câu 12 -->
+              <div class="p-4 sm:p-5 rounded-2xl bg-slate-50 border border-slate-200 space-y-3">
+                <p class="font-extrabold text-sm text-slate-800">
+                  Câu 12. Ghép chất với đẳng thức tích chỉ số và hoá trị tương ứng (quy tắc x · a = y · b):
+                </p>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs sm:text-sm">
+                  <div class="flex items-center justify-between bg-white p-2.5 rounded-xl border border-slate-200">
+                    <span class="font-bold">1. P<sub>2</sub><sup>V</sup>O<sub>5</sub><sup>II</sup></span>
+                    <select id="q12_1" onchange="updateExamProgress()" class="p-1 rounded-lg border font-bold text-violet-700 bg-violet-50 text-xs">
+                      <option value="">Chọn...</option>
+                      <option value="eq10">2 · V = 5 · II (= 10)</option>
+                      <option value="eq4">1 · IV = 2 · II (= 4)</option>
+                      <option value="eq2">2 · I = 1 · II (= 2)</option>
+                    </select>
+                  </div>
+                  <div class="flex items-center justify-between bg-white p-2.5 rounded-xl border border-slate-200">
+                    <span class="font-bold">2. S<sup>IV</sup>O<sub>2</sub><sup>II</sup></span>
+                    <select id="q12_2" onchange="updateExamProgress()" class="p-1 rounded-lg border font-bold text-violet-700 bg-violet-50 text-xs">
+                      <option value="">Chọn...</option>
+                      <option value="eq10">2 · V = 5 · II (= 10)</option>
+                      <option value="eq4">1 · IV = 2 · II (= 4)</option>
+                      <option value="eq2">2 · I = 1 · II (= 2)</option>
+                    </select>
+                  </div>
+                  <div class="flex items-center justify-between bg-white p-2.5 rounded-xl border border-slate-200">
+                    <span class="font-bold">3. H<sub>2</sub><sup>I</sup>S<sup>II</sup></span>
+                    <select id="q12_3" onchange="updateExamProgress()" class="p-1 rounded-lg border font-bold text-violet-700 bg-violet-50 text-xs">
+                      <option value="">Chọn...</option>
+                      <option value="eq10">2 · V = 5 · II (= 10)</option>
+                      <option value="eq4">1 · IV = 2 · II (= 4)</option>
+                      <option value="eq2">2 · I = 1 · II (= 2)</option>
+                    </select>
+                  </div>
+                  <div class="flex items-center justify-between bg-white p-2.5 rounded-xl border border-slate-200">
+                    <span class="font-bold">4. C<sup>IV</sup>H<sub>4</sub><sup>I</sup></span>
+                    <select id="q12_4" onchange="updateExamProgress()" class="p-1 rounded-lg border font-bold text-violet-700 bg-violet-50 text-xs">
+                      <option value="">Chọn...</option>
+                      <option value="eq4_ch4">1 · IV = 4 · I (= 4)</option>
+                      <option value="eq10">2 · V = 5 · II (= 10)</option>
+                      <option value="eq2">2 · I = 1 · II (= 2)</option>
+                    </select>
+                  </div>
+                </div>
+                <div id="q12Feedback" class="hidden text-xs font-bold p-2.5 rounded-xl"></div>
+              </div>
+            </div>
+
+            <!-- ================= PHẦN 4: TRẮC NGHIỆM ĐIỀN KHUYẾT (CÂU 13 - 16) ================= -->
+            <div class="space-y-4">
+              <div class="flex items-center justify-between bg-amber-50 p-3 rounded-2xl border border-amber-200">
+                <span class="text-xs sm:text-sm font-black text-amber-900 uppercase">
+                  🔹 Phần 4: Trắc Nghiệm Điền Khuyết / Điền Từ Ngắn (Câu 13 đến Câu 16 • 2,0 điểm)
+                </span>
+                <span class="text-xs bg-amber-200/70 text-amber-800 font-bold px-2 py-0.5 rounded-md">0,5 đ / câu</span>
+              </div>
+
+              <!-- Câu 13 -->
+              <div class="p-4 sm:p-5 rounded-2xl bg-slate-50 border border-slate-200 space-y-2">
+                <p class="font-extrabold text-sm text-slate-800">
+                  Câu 13. Trong phân tử hydrochloric acid (HCl), một nguyên tử hydrogen liên kết với một nguyên tử chlorine bằng 1 cặp electron dùng chung, do đó chlorine có hoá trị là mấy?
+                </p>
+                <div class="flex items-center space-x-2">
+                  <span class="text-xs font-bold text-slate-600">Đáp án (nhập số hoặc chữ số La Mã):</span>
+                  <input type="text" id="q13" oninput="updateExamProgress()" placeholder="Nhập I hoặc 1" class="w-32 px-3 py-1.5 rounded-xl border border-slate-300 font-extrabold text-sm text-slate-800 text-center uppercase outline-none focus:border-amber-500">
+                </div>
+                <div id="q13Feedback" class="hidden text-xs font-bold p-2.5 rounded-xl"></div>
+              </div>
+
+              <!-- Câu 14 -->
+              <div class="p-4 sm:p-5 rounded-2xl bg-slate-50 border border-slate-200 space-y-2">
+                <p class="font-extrabold text-sm text-slate-800">
+                  Câu 14. Trong phân tử sulfuric acid (H<sub>2</sub>SO<sub>4</sub>), nhóm sulfate (SO<sub>4</sub>) liên kết với 2 nguyên tử hydrogen (hoá trị I) nên nhóm sulfate có hoá trị là mấy?
+                </p>
+                <div class="flex items-center space-x-2">
+                  <span class="text-xs font-bold text-slate-600">Đáp án (nhập số hoặc chữ số La Mã):</span>
+                  <input type="text" id="q14" oninput="updateExamProgress()" placeholder="Nhập II hoặc 2" class="w-32 px-3 py-1.5 rounded-xl border border-slate-300 font-extrabold text-sm text-slate-800 text-center uppercase outline-none focus:border-amber-500">
+                </div>
+                <div id="q14Feedback" class="hidden text-xs font-bold p-2.5 rounded-xl"></div>
+              </div>
+
+              <!-- Câu 15 -->
+              <div class="p-4 sm:p-5 rounded-2xl bg-slate-50 border border-slate-200 space-y-2">
+                <p class="font-extrabold text-sm text-slate-800">
+                  Câu 15. Hợp chất tạo bởi aluminium (hoá trị III) và oxygen (hoá trị II) có công thức hoá học là gì? (Ví dụ: Al2O3).
+                </p>
+                <div class="flex items-center space-x-2">
+                  <span class="text-xs font-bold text-slate-600">Đáp án (nhập công thức):</span>
+                  <input type="text" id="q15" oninput="updateExamProgress()" placeholder="Nhập CTHH..." class="w-40 px-3 py-1.5 rounded-xl border border-slate-300 font-extrabold text-sm text-slate-800 text-center outline-none focus:border-amber-500">
+                </div>
+                <div id="q15Feedback" class="hidden text-xs font-bold p-2.5 rounded-xl"></div>
+              </div>
+
+              <!-- Câu 16 -->
+              <div class="p-4 sm:p-5 rounded-2xl bg-slate-50 border border-slate-200 space-y-2">
+                <p class="font-extrabold text-sm text-slate-800">
+                  Câu 16. Tổng số nguyên tử của tất cả các nguyên tố có trong một phân tử copper(II) sulfate (CuSO<sub>4</sub>) là bao nhiêu?
+                </p>
+                <div class="flex items-center space-x-2">
+                  <span class="text-xs font-bold text-slate-600">Đáp án (nhập số nguyên):</span>
+                  <input type="number" id="q16" oninput="updateExamProgress()" placeholder="Nhập số..." class="w-32 px-3 py-1.5 rounded-xl border border-slate-300 font-extrabold text-sm text-slate-800 text-center outline-none focus:border-amber-500">
+                </div>
+                <div id="q16Feedback" class="hidden text-xs font-bold p-2.5 rounded-xl"></div>
+              </div>
+            </div>
+
+            <!-- ================= PHẦN 5: TỰ LUẬN (CÂU 17 - 20) ================= -->
+            <div class="space-y-4">
+              <div class="flex items-center justify-between bg-emerald-50 p-3 rounded-2xl border border-emerald-200">
+                <span class="text-xs sm:text-sm font-black text-emerald-900 uppercase">
+                  🔹 Phần 5: Câu Hỏi Tự Luận (Câu 17 đến Câu 20 • 2,0 điểm)
+                </span>
+                <span class="text-xs bg-emerald-200/70 text-emerald-800 font-bold px-2 py-0.5 rounded-md">0,5 đ / câu</span>
+              </div>
+
+              <!-- Câu 17 -->
+              <div class="p-4 sm:p-5 rounded-2xl bg-slate-50 border border-slate-200 space-y-2">
+                <p class="font-extrabold text-sm text-slate-800">
+                  Câu 17 (0,5 điểm). Hãy nêu 3 ý nghĩa của công thức hoá học calcium carbonate (CaCO<sub>3</sub>).
+                </p>
+                <textarea id="q17" oninput="updateExamProgress()" rows="3" placeholder="Nhập câu trả lời của em: 1) Các nguyên tố tạo nên chất... 2) Số nguyên tử... 3) Khối lượng phân tử..." class="w-full p-3 rounded-xl border border-slate-300 text-xs sm:text-sm font-medium text-slate-800 outline-none focus:border-emerald-500"></textarea>
+                <div id="q17Feedback" class="hidden text-xs font-bold p-3 rounded-xl"></div>
+              </div>
+
+              <!-- Câu 18 -->
+              <div class="p-4 sm:p-5 rounded-2xl bg-slate-50 border border-slate-200 space-y-2">
+                <p class="font-extrabold text-sm text-slate-800">
+                  Câu 18 (0,5 điểm). Copper(II) sulfate (CuSO<sub>4</sub>) được dùng làm chất chống xoăn lá cho cây cà chua. Em hãy tính phần trăm khối lượng của nguyên tố copper (Cu) trong hợp chất này (Biết Cu = 64, S = 32, O = 16 amu).
+                </p>
+                <textarea id="q18" oninput="updateExamProgress()" rows="3" placeholder="Trình bày các bước: Tính KLPT của CuSO4 = ...; Sau đó tính %Cu = ..." class="w-full p-3 rounded-xl border border-slate-300 text-xs sm:text-sm font-medium text-slate-800 outline-none focus:border-emerald-500"></textarea>
+                <div id="q18Feedback" class="hidden text-xs font-bold p-3 rounded-xl"></div>
+              </div>
+
+              <!-- Câu 19 -->
+              <div class="p-4 sm:p-5 rounded-2xl bg-slate-50 border border-slate-200 space-y-2">
+                <p class="font-extrabold text-sm text-slate-800">
+                  Câu 19 (0,5 điểm). Lập công thức hoá học của hợp chất tạo bởi sulfur (hoá trị IV) và oxygen theo quy tắc hoá trị.
+                </p>
+                <textarea id="q19" oninput="updateExamProgress()" rows="3" placeholder="Trình bày: 1. Viết công thức dạng chung SxOy; 2. Theo quy tắc hoá trị x·IV = y·II...; 3. Kết luận CTHH." class="w-full p-3 rounded-xl border border-slate-300 text-xs sm:text-sm font-medium text-slate-800 outline-none focus:border-emerald-500"></textarea>
+                <div id="q19Feedback" class="hidden text-xs font-bold p-3 rounded-xl"></div>
+              </div>
+
+              <!-- Câu 20 -->
+              <div class="p-4 sm:p-5 rounded-2xl bg-slate-50 border border-slate-200 space-y-2">
+                <p class="font-extrabold text-sm text-slate-800">
+                  Câu 20 (0,5 điểm). Một hợp chất tạo bởi carbon và hydrogen có chứa 75% C và 25% H về khối lượng. Biết khối lượng phân tử của hợp chất là 16 amu (C = 12, H = 1 amu). Hãy lập công thức hoá học của hợp chất.
+                </p>
+                <textarea id="q20" oninput="updateExamProgress()" rows="3" placeholder="Trình bày: 1. Đặt công thức CxHy; 2. Tìm x = ...; Tìm y = ...; 3. Kết luận CTHH." class="w-full p-3 rounded-xl border border-slate-300 text-xs sm:text-sm font-medium text-slate-800 outline-none focus:border-emerald-500"></textarea>
+                <div id="q20Feedback" class="hidden text-xs font-bold p-3 rounded-xl"></div>
+              </div>
+            </div>
+
+            <!-- Submit Button Area -->
+            <div class="text-center pt-4 space-y-3">
+              <button type="submit" id="examSubmitBtn" class="px-10 py-4 rounded-2xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-black text-base sm:text-lg shadow-clay-success active:translate-y-1 transition-all">
+                <i class="fa-solid fa-paper-plane mr-2"></i>
+                NỘP BÀI KIỂM TRA &amp; CHẤM ĐIỂM
+              </button>
+              <p class="text-xs text-slate-500 font-semibold">
+                * Sau khi nộp, hệ thống sẽ tự động chấm điểm chi tiết từng câu và xuất phiếu báo điểm chính thức.
+              </p>
+            </div>
+
+          </form>
+
+          <!-- ================= PHIẾU BÁO ĐIỂM CHÍNH THỨC (XUẤT HIỆN SAU KHI NỘP) ================= -->
+          <div id="examResultCard" class="hidden space-y-6 pt-6 border-t-2 border-slate-200">
+            
+            <div id="examPrintCertificate" class="bg-gradient-to-br from-amber-50 via-white to-sky-50 border-4 border-amber-400 rounded-3xl p-6 sm:p-8 shadow-xl text-center space-y-4">
+              <div class="flex items-center justify-between border-b border-amber-200 pb-3">
+                <div class="flex items-center space-x-3">
+                  <img src="logo.png" alt="Logo" width="60" height="60" style="width: 60px; height: 60px; min-width: 60px; min-height: 60px; object-fit: contain;" class="rounded-full border-2 border-amber-400 bg-white shadow-sm flex-shrink-0" />
+                  <div class="text-left">
+                    <span class="text-[10px] font-bold text-slate-500 uppercase block">TRƯỜNG TH &amp; THCS PHƯỚC HƯNG</span>
+                    <span class="text-xs font-extrabold text-slate-800 block">TỔ KHOA HỌC TỰ NHIÊN - BỘ MÔN HOÁ HỌC</span>
+                  </div>
+                </div>
+                <div class="text-right text-[11px] text-slate-500 font-bold">
+                  <span>Ngày làm bài: <strong id="certDate">--/--/----</strong></span>
+                </div>
+              </div>
+
+              <div class="space-y-1">
+                <span class="text-xs font-black text-amber-700 uppercase tracking-widest">PHIẾU BÁO ĐIỂM KIỂM TRA BÀI HỌC</span>
+                <h3 class="text-2xl sm:text-3xl font-black text-slate-900 font-display">
+                  BÀI 7: HOÁ TRỊ VÀ CÔNG THỨC HOÁ HỌC
+                </h3>
+              </div>
+
+              <div class="max-w-md mx-auto bg-white p-4 rounded-2xl border border-slate-200 shadow-sm flex items-center justify-around">
+                <div class="text-left">
+                  <span class="text-xs text-slate-500 font-bold block">Họ và tên thí sinh:</span>
+                  <span id="certStudentName" class="text-base font-black text-slate-900">--</span>
+                </div>
+                <div class="text-right">
+                  <span class="text-xs text-slate-500 font-bold block">Lớp:</span>
+                  <span id="certStudentClass" class="text-base font-black text-indigo-700">--</span>
+                </div>
+              </div>
+
+              <!-- Grand Score -->
+              <div class="py-2">
+                <span class="text-xs font-black uppercase text-slate-600 block">TỔNG ĐIỂM ĐẠT ĐƯỢC (THANG ĐIỂM 10)</span>
+                <div class="text-5xl sm:text-6xl font-black text-emerald-600 font-display mt-1">
+                  <span id="certFinalScore">0.0</span> <span class="text-2xl text-slate-400">/ 10,0</span>
+                </div>
+                <span id="certRankBadge" class="inline-block mt-2 px-4 py-1 rounded-full text-xs font-black uppercase tracking-wider bg-emerald-100 text-emerald-800">
+                  XẾP LOẠI: XUẤT SẮC
+                </span>
+              </div>
+
+              <!-- Score details table -->
+              <div class="grid grid-cols-2 sm:grid-cols-5 gap-2 text-xs font-bold pt-2">
+                <div class="bg-slate-50 p-2.5 rounded-xl border">
+                  <span class="text-slate-500 block">P1: Trắc nghiệm</span>
+                  <span id="scoreP1" class="text-sm font-black text-sky-700">0.0 / 2.0</span>
+                </div>
+                <div class="bg-slate-50 p-2.5 rounded-xl border">
+                  <span class="text-slate-500 block">P2: Đúng / Sai</span>
+                  <span id="scoreP2" class="text-sm font-black text-indigo-700">0.0 / 2.0</span>
+                </div>
+                <div class="bg-slate-50 p-2.5 rounded-xl border">
+                  <span class="text-slate-500 block">P3: Ghép đôi</span>
+                  <span id="scoreP3" class="text-sm font-black text-violet-700">0.0 / 2.0</span>
+                </div>
+                <div class="bg-slate-50 p-2.5 rounded-xl border">
+                  <span class="text-slate-500 block">P4: Điền khuyết</span>
+                  <span id="scoreP4" class="text-sm font-black text-amber-700">0.0 / 2.0</span>
+                </div>
+                <div class="bg-slate-50 p-2.5 rounded-xl border col-span-2 sm:col-span-1">
+                  <span class="text-slate-500 block">P5: Tự luận</span>
+                  <span id="scoreP5" class="text-sm font-black text-emerald-700">0.0 / 2.0</span>
+                </div>
+              </div>
+
+              <!-- Teacher remark -->
+              <div class="p-3 bg-amber-50 rounded-xl border border-amber-200 text-xs text-amber-950 text-left">
+                <strong>Nhận xét của Giáo viên (Thầy Lê Văn Thắng):</strong>
+                <p id="certTeacherRemark" class="mt-1 italic">
+                  Em đã hoàn thành bài kiểm tra với kết quả rất tích cực!
+                </p>
+              </div>
+            </div>
+
+            <!-- Action buttons -->
+            <div class="flex flex-wrap justify-center gap-3">
+              <button onclick="window.print()" class="px-6 py-3 rounded-2xl bg-slate-800 hover:bg-slate-700 text-white font-extrabold text-xs sm:text-sm transition-all flex items-center space-x-2">
+                <i class="fa-solid fa-print"></i>
+                <span>In Phiếu Báo Điểm / Lưu PDF</span>
+              </button>
+              <button onclick="retakeExam()" class="px-6 py-3 rounded-2xl bg-sky-600 hover:bg-sky-500 text-white font-extrabold text-xs sm:text-sm shadow-clay-button transition-all flex items-center space-x-2">
+                <i class="fa-solid fa-rotate-right"></i>
+                <span>Làm Lại Bài Kiểm Tra</span>
+              </button>
+            </div>
+
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ================= FOOTER ================= -->
+  <footer class="mt-20 bg-slate-900 text-slate-300 py-10 border-t-4 border-amber-400">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-4 text-center sm:text-left">
+      <div class="flex flex-col sm:flex-row items-center justify-between gap-4">
+        <div class="flex items-center space-x-3.5">
+          <img src="logo.png" alt="Logo" width="64" height="64" style="width: 64px; height: 64px; min-width: 64px; min-height: 64px; object-fit: contain;" class="rounded-full border-2 border-amber-400 bg-white shadow-md flex-shrink-0" />
+          <div>
+            <h4 class="text-white font-extrabold text-base font-display">Học Liệu Số Khoa Học Tự Nhiên 7 - Chuẩn Danh Pháp IUPAC</h4>
+            <p class="text-xs text-slate-400">Thiết kế bài dạy: <strong class="text-amber-400">Thầy Lê Văn Thắng</strong> • Trường TH &amp; THCS Phước Hưng</p>
+          </div>
+        </div>
+        <button onclick="window.scrollTo({top: 0, behavior: 'smooth'})" class="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-white text-xs font-bold border border-slate-700 transition-all">
+          <i class="fa-solid fa-arrow-up mr-1.5"></i> Lên đầu trang
+        </button>
+      </div>
+    </div>
+  </footer>
+
+
+  <!-- ================= JAVASCRIPT LOGIC ================= -->
+  <script>
+    // Audio Synthesizer (Native Web Audio API)
+    let audioCtx = null;
+    let isSoundOn = true;
+
+    function getAudioContext() {
+      if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      if (audioCtx.state === 'suspended') audioCtx.resume();
+      return audioCtx;
+    }
+
+    function toggleSound() {
+      isSoundOn = !isSoundOn;
+      const icon = document.getElementById('soundIcon');
+      const btn = document.getElementById('soundToggleBtn');
+      if (isSoundOn) {
+        icon.className = 'fa-solid fa-volume-high text-xs';
+        btn.classList.remove('bg-rose-100', 'text-rose-600');
+        playClick();
+      } else {
+        icon.className = 'fa-solid fa-volume-xmark text-xs';
+        btn.classList.add('bg-rose-100', 'text-rose-600');
+      }
+    }
+
+    function playTone(freq, type, duration, delay = 0, gainLevel = 0.15) {
+      if (!isSoundOn) return;
+      try {
+        const ctx = getAudioContext();
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = type;
+        osc.frequency.setValueAtTime(freq, ctx.currentTime + delay);
+        gain.gain.setValueAtTime(gainLevel, ctx.currentTime + delay);
+        gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + delay + duration);
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.start(ctx.currentTime + delay);
+        osc.stop(ctx.currentTime + delay + duration);
+      } catch (e) {}
+    }
+
+    function playSuccess() {
+      playTone(523.25, 'triangle', 0.15, 0, 0.2);
+      playTone(659.25, 'triangle', 0.15, 0.1, 0.2);
+      playTone(783.99, 'triangle', 0.25, 0.2, 0.25);
+    }
+
+    function playOops() {
+      playTone(330, 'sawtooth', 0.2, 0, 0.15);
+      playTone(280, 'sawtooth', 0.3, 0.15, 0.15);
+    }
+
+    function playClick() {
+      playTone(800, 'sine', 0.05, 0, 0.08);
+    }
+
+    function triggerConfetti() {
+      if (typeof confetti === 'function') {
+        confetti({ particleCount: 70, spread: 70, origin: { y: 0.6 } });
+      }
+    }
+
+    // ================= STUDENT LOGIN & SESSION =================
+    let currentStudent = {
+      name: '',
+      studentClass: '',
+      isLoggedIn: false
+    };
+
+    function selectClassQuick(cls) {
+      document.getElementById('loginStudentClass').value = cls;
+      playClick();
+    }
+
+    function handleStudentLogin(e) {
+      e.preventDefault();
+      const name = document.getElementById('loginStudentName').value.trim();
+      const cls = document.getElementById('loginStudentClass').value.trim();
+      const err = document.getElementById('loginErrorMsg');
+
+      if (!name || !cls) {
+        err.textContent = 'Vui lòng nhập đầy đủ Họ và tên học sinh và Lớp!';
+        err.classList.remove('hidden');
+        return;
+      }
+
+      currentStudent.name = name;
+      currentStudent.studentClass = cls;
+      currentStudent.isLoggedIn = true;
+
+      // Save to localStorage
+      try {
+        localStorage.setItem('khtn7_student_name', name);
+        localStorage.setItem('khtn7_student_class', cls);
+      } catch (e) {}
+
+      updateStudentUI();
+      document.getElementById('loginModal').classList.add('hidden');
+      playSuccess();
+      triggerConfetti();
+    }
+
+    function handleStudentLogout() {
+      if (confirm('Em có chắc chắn muốn đăng xuất tài khoản?')) {
+        currentStudent.name = '';
+        currentStudent.studentClass = '';
+        currentStudent.isLoggedIn = false;
+        try {
+          localStorage.removeItem('khtn7_student_name');
+          localStorage.removeItem('khtn7_student_class');
+        } catch (e) {}
+        document.getElementById('loginStudentName').value = '';
+        document.getElementById('loginStudentClass').value = '';
+        document.getElementById('loginModal').classList.remove('hidden');
+      }
+    }
+
+    function updateStudentUI() {
+      document.getElementById('headerStudentName').textContent = currentStudent.name || 'Chưa đăng nhập';
+      document.getElementById('headerStudentClass').textContent = 'Lớp: ' + (currentStudent.studentClass || '--');
+      document.getElementById('examCandidateName').textContent = currentStudent.name || 'Học sinh';
+      document.getElementById('examCandidateClass').textContent = 'Lớp: ' + (currentStudent.studentClass || '--');
+      document.getElementById('certStudentName').textContent = currentStudent.name;
+      document.getElementById('certStudentClass').textContent = currentStudent.studentClass;
+    }
+
+    function checkSavedSession() {
+      try {
+        const savedName = localStorage.getItem('khtn7_student_name');
+        const savedClass = localStorage.getItem('khtn7_student_class');
+        if (savedName && savedClass) {
+          currentStudent.name = savedName;
+          currentStudent.studentClass = savedClass;
+          currentStudent.isLoggedIn = true;
+          updateStudentUI();
+          document.getElementById('loginModal').classList.add('hidden');
+        }
+      } catch (e) {}
+    }
+
+    // ================= KHỞI ĐỘNG INTERACTION =================
+    function checkWarmupAnswer(choice) {
+      playClick();
+      const fb = document.getElementById('warmupFeedback');
+      if (choice === 4) {
+        playSuccess();
+        fb.className = 'max-w-lg mx-auto p-3.5 rounded-2xl text-xs sm:text-sm font-bold bg-emerald-100 text-emerald-900 border border-emerald-300';
+        fb.innerHTML = '🎉 <strong>Chính xác 100%!</strong> Một nguyên tử carbon (hoá trị IV) có 4 cánh tay liên kết với 4 nguyên tử hydrogen (hoá trị I) tạo thành phân tử methane (CH<sub>4</sub>). +10 Sao ⭐!';
+        fb.classList.remove('hidden');
+        triggerConfetti();
+      } else {
+        playOops();
+        fb.className = 'max-w-lg mx-auto p-3.5 rounded-2xl text-xs sm:text-sm font-bold bg-rose-100 text-rose-900 border border-rose-300';
+        fb.innerHTML = '🤔 <strong>Chưa chính xác!</strong> Gợi ý: Oxygen (hoá trị II) liên kết được 2 H. Vậy Carbon (hoá trị IV) gấp đôi thì sẽ liên kết được bao nhiêu H? Thử lại nhé!';
+        fb.classList.remove('hidden');
+      }
+    }
+
+    // ================= CALCULATOR WIDGET (IUPAC) =================
+    const compoundData = {
+      'KNO3': {
+        name: 'Potassium nitrate (Phân bón - SGK trang 1)',
+        formula: 'KNO<sub>3</sub>',
+        elements: [
+          { sym: 'K', name: 'potassium', mass: 39, count: 1 },
+          { sym: 'N', name: 'nitrogen', mass: 14, count: 1 },
+          { sym: 'O', name: 'oxygen', mass: 16, count: 3 }
+        ]
+      },
+      'CaCO3': {
+        name: 'Calcium carbonate (Đá vôi - SGK trang 1)',
+        formula: 'CaCO<sub>3</sub>',
+        elements: [
+          { sym: 'Ca', name: 'calcium', mass: 40, count: 1 },
+          { sym: 'C', name: 'carbon', mass: 12, count: 1 },
+          { sym: 'O', name: 'oxygen', mass: 16, count: 3 }
+        ]
+      },
+      'CuSO4': {
+        name: 'Copper(II) sulfate (Chất chống xoăn lá cà chua - SGK trang 1)',
+        formula: 'CuSO<sub>4</sub>',
+        elements: [
+          { sym: 'Cu', name: 'copper', mass: 64, count: 1 },
+          { sym: 'S', name: 'sulfur', mass: 32, count: 1 },
+          { sym: 'O', name: 'oxygen', mass: 16, count: 4 }
+        ]
+      },
+      'CH4': {
+        name: 'Methane (Khí thiên nhiên - SGK trang 3)',
+        formula: 'CH<sub>4</sub>',
+        elements: [
+          { sym: 'C', name: 'carbon', mass: 12, count: 1 },
+          { sym: 'H', name: 'hydrogen', mass: 1, count: 4 }
+        ]
+      }
+    };
+
+    function calculateCompound(key) {
+      playClick();
+      const btns = document.querySelectorAll('.calc-btn');
+      btns.forEach(b => {
+        b.classList.remove('bg-emerald-600', 'text-white');
+        b.classList.add('bg-slate-100', 'text-slate-700');
+      });
+      event.target.classList.add('bg-emerald-600', 'text-white');
+      event.target.classList.remove('bg-slate-100', 'text-slate-700');
+
+      const data = compoundData[key];
+      let totalMass = 0;
+      let step1Str = '';
+      data.elements.forEach((el, idx) => {
+        totalMass += el.mass * el.count;
+        step1Str += `${el.mass} × ${el.count}` + (idx < data.elements.length - 1 ? ' + ' : '');
+      });
+
+      let html = `
+        <div class="flex items-center justify-between border-b border-slate-200 pb-2">
+          <span class="font-bold text-slate-800 text-sm">${data.name}: <strong class="text-emerald-700 text-base">${data.formula}</strong></span>
+          <span class="text-xs font-mono font-bold text-emerald-800 bg-emerald-50 px-2 py-0.5 rounded">KLPT = ${step1Str} = ${totalMass} amu</span>
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 pt-1 text-xs">
+      `;
+
+      data.elements.forEach(el => {
+        const pct = ((el.mass * el.count / totalMass) * 100).toFixed(1);
+        html += `
+          <div class="bg-white p-2.5 rounded-xl border border-slate-200">
+            <span class="font-bold text-slate-900 block">% khối lượng ${el.name} (${el.sym}):</span>
+            <div class="font-mono text-[11px] text-slate-500 mt-0.5">(${el.mass} × ${el.count} / ${totalMass}) × 100%</div>
+            <div class="text-sm font-black text-emerald-600 mt-0.5">≈ ${pct}%</div>
+          </div>
+        `;
+      });
+      html += '</div>';
+      document.getElementById('compoundCalcResult').innerHTML = html;
+    }
+
+    // ================= VALENCY TABLE (IUPAC) =================
+    const valencyElements = [
+      { name: 'hydrogen', sym: 'H', val: 'I', type: 'elem' },
+      { name: 'carbon', sym: 'C', val: 'II, IV', type: 'elem' },
+      { name: 'nitrogen', sym: 'N', val: 'I, II, III, IV', type: 'elem' },
+      { name: 'oxygen', sym: 'O', val: 'II', type: 'elem' },
+      { name: 'sodium', sym: 'Na', val: 'I', type: 'elem' },
+      { name: 'magnesium', sym: 'Mg', val: 'II', type: 'elem' },
+      { name: 'aluminium', sym: 'Al', val: 'III', type: 'elem' },
+      { name: 'silicon', sym: 'Si', val: 'IV', type: 'elem' },
+      { name: 'phosphorus', sym: 'P', val: 'III, V', type: 'elem' },
+      { name: 'sulfur', sym: 'S', val: 'II, IV, VI', type: 'elem' },
+      { name: 'chlorine', sym: 'Cl', val: 'I, III, V, VII', type: 'elem' },
+      { name: 'potassium', sym: 'K', val: 'I', type: 'elem' },
+      { name: 'calcium', sym: 'Ca', val: 'II', type: 'elem' },
+      { name: 'iron', sym: 'Fe', val: 'II, III', type: 'elem' },
+      { name: 'copper', sym: 'Cu', val: 'I, II', type: 'elem' },
+      { name: 'hydroxide', sym: 'OH', val: 'I', type: 'nhom' },
+      { name: 'nitrate', sym: 'NO₃', val: 'I', type: 'nhom' },
+      { name: 'sulfate', sym: 'SO₄', val: 'II', type: 'nhom' },
+      { name: 'carbonate', sym: 'CO₃', val: 'II', type: 'nhom' },
+      { name: 'phosphate', sym: 'PO₄', val: 'III', type: 'nhom' }
+    ];
+
+    function renderValencyGrid() {
+      const container = document.getElementById('valencyGrid');
+      const search = document.getElementById('valencySearchInput').value.toLowerCase().trim();
+      container.innerHTML = '';
+
+      valencyElements.filter(item => item.name.toLowerCase().includes(search) || item.sym.toLowerCase().includes(search)).forEach(item => {
+        const isNhom = item.type === 'nhom';
+        const card = document.createElement('div');
+        card.className = `p-2.5 rounded-2xl border ${isNhom ? 'bg-purple-50 border-purple-200' : 'bg-white border-slate-200'} shadow-sm text-center flex flex-col justify-between`;
+        card.innerHTML = `
+          <div>
+            <div class="text-xl font-black ${isNhom ? 'text-purple-700' : 'text-sky-700'} font-display">${item.sym}</div>
+            <div class="text-[11px] font-bold text-slate-600 truncate">${item.name}</div>
+          </div>
+          <div class="mt-1.5 pt-1 border-t border-slate-100">
+            <span class="text-[11px] font-black text-rose-600 bg-rose-50 px-1.5 py-0.5 rounded">${item.val}</span>
+          </div>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    function filterValencyTable() {
+      renderValencyGrid();
+    }
+
+    // ================= 20-QUESTION EXAM CHECKER =================
+    function updateExamProgress() {
+      let answered = 0;
+      // Q1 - Q4
+      ['q1', 'q2', 'q3', 'q4'].forEach(n => {
+        if (document.querySelector(`input[name="${n}"]:checked`)) answered++;
+      });
+      // Q5 - Q8
+      ['q5', 'q6', 'q7', 'q8'].forEach(n => {
+        if (document.querySelector(`input[name="${n}"]:checked`)) answered++;
+      });
+      // Q9 - Q12
+      ['q9_1', 'q10_1', 'q11_1', 'q12_1'].forEach(id => {
+        if (document.getElementById(id) && document.getElementById(id).value) answered++;
+      });
+      // Q13 - Q16
+      ['q13', 'q14', 'q15', 'q16'].forEach(id => {
+        if (document.getElementById(id) && document.getElementById(id).value.trim()) answered++;
+      });
+      // Q17 - Q20
+      ['q17', 'q18', 'q19', 'q20'].forEach(id => {
+        if (document.getElementById(id) && document.getElementById(id).value.trim().length > 5) answered++;
+      });
+
+      const pct = Math.round((answered / 20) * 100);
+      document.getElementById('examProgressBar').style.width = pct + '%';
+      document.getElementById('examAnsweredCountText').textContent = `Đã trả lời: ${answered} / 20 câu (${pct}%)`;
+    }
+
+    function submitExam(e) {
+      e.preventDefault();
+      playClick();
+
+      let p1Score = 0;
+      let p2Score = 0;
+      let p3Score = 0;
+      let p4Score = 0;
+      let p5Score = 0;
+
+      // --- PHẦN 1 (Câu 1 - 4) ---
+      // Q1: A
+      const q1Val = document.querySelector('input[name="q1"]:checked')?.value;
+      const q1Fb = document.getElementById('q1Feedback');
+      q1Fb.classList.remove('hidden');
+      if (q1Val === 'A') {
+        p1Score += 0.5;
+        q1Fb.className = 'text-xs font-bold p-2.5 rounded-xl bg-emerald-100 text-emerald-900';
+        q1Fb.innerHTML = '✅ Đúng (0,5đ): Chỉ số 2 ở chân O cho biết có 2 nguyên tử oxygen trong 1 phân tử CO₂.';
+      } else {
+        q1Fb.className = 'text-xs font-bold p-2.5 rounded-xl bg-rose-100 text-rose-900';
+        q1Fb.innerHTML = '❌ Chưa đúng (0đ). Đáp án đúng là A: Có 2 nguyên tử oxygen trong 1 phân tử CO₂.';
+      }
+
+      // Q2: C (100 amu)
+      const q2Val = document.querySelector('input[name="q2"]:checked')?.value;
+      const q2Fb = document.getElementById('q2Feedback');
+      q2Fb.classList.remove('hidden');
+      if (q2Val === 'C') {
+        p1Score += 0.5;
+        q2Fb.className = 'text-xs font-bold p-2.5 rounded-xl bg-emerald-100 text-emerald-900';
+        q2Fb.innerHTML = '✅ Đúng (0,5đ): KLPT CaCO₃ = 40 + 12 + 16×3 = 100 amu.';
+      } else {
+        q2Fb.className = 'text-xs font-bold p-2.5 rounded-xl bg-rose-100 text-rose-900';
+        q2Fb.innerHTML = '❌ Chưa đúng (0đ). Đáp án đúng là C: 100 amu.';
+      }
+
+      // Q3: B (38,6%)
+      const q3Val = document.querySelector('input[name="q3"]:checked')?.value;
+      const q3Fb = document.getElementById('q3Feedback');
+      q3Fb.classList.remove('hidden');
+      if (q3Val === 'B') {
+        p1Score += 0.5;
+        q3Fb.className = 'text-xs font-bold p-2.5 rounded-xl bg-emerald-100 text-emerald-900';
+        q3Fb.innerHTML = '✅ Đúng (0,5đ): %K = (39 / 101) × 100% ≈ 38,6%.';
+      } else {
+        q3Fb.className = 'text-xs font-bold p-2.5 rounded-xl bg-rose-100 text-rose-900';
+        q3Fb.innerHTML = '❌ Chưa đúng (0đ). Đáp án đúng là B: 38,6%.';
+      }
+
+      // Q4: B (Hoá trị IV)
+      const q4Val = document.querySelector('input[name="q4"]:checked')?.value;
+      const q4Fb = document.getElementById('q4Feedback');
+      q4Fb.classList.remove('hidden');
+      if (q4Val === 'B') {
+        p1Score += 0.5;
+        q4Fb.className = 'text-xs font-bold p-2.5 rounded-xl bg-emerald-100 text-emerald-900';
+        q4Fb.innerHTML = '✅ Đúng (0,5đ): 1·a = 2·II ➔ a = IV.';
+      } else {
+        q4Fb.className = 'text-xs font-bold p-2.5 rounded-xl bg-rose-100 text-rose-900';
+        q4Fb.innerHTML = '❌ Chưa đúng (0đ). Đáp án đúng là B: Hoá trị IV.';
+      }
+
+      // --- PHẦN 2 (Câu 5 - 8) ---
+      // Q5: DUNG
+      const q5Val = document.querySelector('input[name="q5"]:checked')?.value;
+      const q5Fb = document.getElementById('q5Feedback');
+      q5Fb.classList.remove('hidden');
+      if (q5Val === 'DUNG') {
+        p2Score += 0.5;
+        q5Fb.className = 'text-xs font-bold p-2.5 rounded-xl bg-emerald-100 text-emerald-900';
+        q5Fb.innerHTML = '✅ Đúng (0,5đ): Định nghĩa chuẩn SGK trang 2.';
+      } else {
+        q5Fb.className = 'text-xs font-bold p-2.5 rounded-xl bg-rose-100 text-rose-900';
+        q5Fb.innerHTML = '❌ Chưa đúng (0đ). Đây là nhận định ĐÚNG.';
+      }
+
+      // Q6: SAI
+      const q6Val = document.querySelector('input[name="q6"]:checked')?.value;
+      const q6Fb = document.getElementById('q6Feedback');
+      q6Fb.classList.remove('hidden');
+      if (q6Val === 'SAI') {
+        p2Score += 0.5;
+        q6Fb.className = 'text-xs font-bold p-2.5 rounded-xl bg-emerald-100 text-emerald-900';
+        q6Fb.innerHTML = '✅ Đúng (0,5đ): Đơn chất kim loại lấy KHHH làm CTHH (Cu, Fe, Na...).';
+      } else {
+        q6Fb.className = 'text-xs font-bold p-2.5 rounded-xl bg-rose-100 text-rose-900';
+        q6Fb.innerHTML = '❌ Chưa đúng (0đ). Nhận định này SAI.';
+      }
+
+      // Q7: DUNG
+      const q7Val = document.querySelector('input[name="q7"]:checked')?.value;
+      const q7Fb = document.getElementById('q7Feedback');
+      q7Fb.classList.remove('hidden');
+      if (q7Val === 'DUNG') {
+        p2Score += 0.5;
+        q7Fb.className = 'text-xs font-bold p-2.5 rounded-xl bg-emerald-100 text-emerald-900';
+        q7Fb.innerHTML = '✅ Đúng (0,5đ): Quy ước quốc tế: H luôn hoá trị I, O luôn hoá trị II.';
+      } else {
+        q7Fb.className = 'text-xs font-bold p-2.5 rounded-xl bg-rose-100 text-rose-900';
+        q7Fb.innerHTML = '❌ Chưa đúng (0đ). Đây là quy ước ĐÚNG.';
+      }
+
+      // Q8: SAI
+      const q8Val = document.querySelector('input[name="q8"]:checked')?.value;
+      const q8Fb = document.getElementById('q8Feedback');
+      q8Fb.classList.remove('hidden');
+      if (q8Val === 'SAI') {
+        p2Score += 0.5;
+        q8Fb.className = 'text-xs font-bold p-2.5 rounded-xl bg-emerald-100 text-emerald-900';
+        q8Fb.innerHTML = '✅ Đúng (0,5đ): CTHH đúng của potassium oxide phải là K₂O.';
+      } else {
+        q8Fb.className = 'text-xs font-bold p-2.5 rounded-xl bg-rose-100 text-rose-900';
+        q8Fb.innerHTML = '❌ Chưa đúng (0đ). Nhận định này SAI (phải là K₂O).';
+      }
+
+      // --- PHẦN 3: GHÉP ĐÔI (Câu 9 - 12) ---
+      // Q9: Na(I), Al(III), Mg(II), Si(IV)
+      const q9_1 = document.getElementById('q9_1').value;
+      const q9_2 = document.getElementById('q9_2').value;
+      const q9_3 = document.getElementById('q9_3').value;
+      const q9_4 = document.getElementById('q9_4').value;
+      const q9Fb = document.getElementById('q9Feedback');
+      q9Fb.classList.remove('hidden');
+      if (q9_1 === 'I' && q9_2 === 'III' && q9_3 === 'II' && q9_4 === 'IV') {
+        p3Score += 0.5;
+        q9Fb.className = 'text-xs font-bold p-2.5 rounded-xl bg-emerald-100 text-emerald-900';
+        q9Fb.innerHTML = '✅ Đúng (0,5đ): Na(I), Al(III), Mg(II), Si(IV).';
+      } else {
+        q9Fb.className = 'text-xs font-bold p-2.5 rounded-xl bg-rose-100 text-rose-900';
+        q9Fb.innerHTML = '❌ Chưa đúng (0đ). Đáp án: Na(I), Al(III), Mg(II), Si(IV).';
+      }
+
+      // Q10: OH(I), SO4(II), NO3(I), PO4(III)
+      const q10_1 = document.getElementById('q10_1').value;
+      const q10_2 = document.getElementById('q10_2').value;
+      const q10_3 = document.getElementById('q10_3').value;
+      const q10_4 = document.getElementById('q10_4').value;
+      const q10Fb = document.getElementById('q10Feedback');
+      q10Fb.classList.remove('hidden');
+      if (q10_1 === 'I' && q10_2 === 'II' && q10_3 === 'I' && q10_4 === 'III') {
+        p3Score += 0.5;
+        q10Fb.className = 'text-xs font-bold p-2.5 rounded-xl bg-emerald-100 text-emerald-900';
+        q10Fb.innerHTML = '✅ Đúng (0,5đ): OH(I), SO₄(II), NO₃(I), PO₄(III).';
+      } else {
+        q10Fb.className = 'text-xs font-bold p-2.5 rounded-xl bg-rose-100 text-rose-900';
+        q10Fb.innerHTML = '❌ Chưa đúng (0đ). Đáp án: OH(I), SO₄(II), NO₃(I), PO₄(III).';
+      }
+
+      // Q11: NaCl -> sodium_chloride, CH4 -> methane, CuSO4 -> copper_sulfate, H2S -> hydrogen_sulfide
+      const q11_1 = document.getElementById('q11_1').value;
+      const q11_2 = document.getElementById('q11_2').value;
+      const q11_3 = document.getElementById('q11_3').value;
+      const q11_4 = document.getElementById('q11_4').value;
+      const q11Fb = document.getElementById('q11Feedback');
+      q11Fb.classList.remove('hidden');
+      if (q11_1 === 'sodium_chloride' && q11_2 === 'methane' && q11_3 === 'copper_sulfate' && q11_4 === 'hydrogen_sulfide') {
+        p3Score += 0.5;
+        q11Fb.className = 'text-xs font-bold p-2.5 rounded-xl bg-emerald-100 text-emerald-900';
+        q11Fb.innerHTML = '✅ Đúng (0,5đ): Chuẩn danh pháp IUPAC 100%.';
+      } else {
+        q11Fb.className = 'text-xs font-bold p-2.5 rounded-xl bg-rose-100 text-rose-900';
+        q11Fb.innerHTML = '❌ Chưa đúng (0đ). Đáp án: NaCl: Sodium chloride; CH₄: Methane; CuSO₄: Copper(II) sulfate; H₂S: Hydrogen sulfide.';
+      }
+
+      // Q12: P2O5 -> eq10, SO2 -> eq4, H2S -> eq2, CH4 -> eq4_ch4
+      const q12_1 = document.getElementById('q12_1').value;
+      const q12_2 = document.getElementById('q12_2').value;
+      const q12_3 = document.getElementById('q12_3').value;
+      const q12_4 = document.getElementById('q12_4').value;
+      const q12Fb = document.getElementById('q12Feedback');
+      q12Fb.classList.remove('hidden');
+      if (q12_1 === 'eq10' && q12_2 === 'eq4' && q12_3 === 'eq2' && q12_4 === 'eq4_ch4') {
+        p3Score += 0.5;
+        q12Fb.className = 'text-xs font-bold p-2.5 rounded-xl bg-emerald-100 text-emerald-900';
+        q12Fb.innerHTML = '✅ Đúng (0,5đ): Tích chỉ số và hoá trị hoàn toàn chính xác.';
+      } else {
+        q12Fb.className = 'text-xs font-bold p-2.5 rounded-xl bg-rose-100 text-rose-900';
+        q12Fb.innerHTML = '❌ Chưa đúng (0đ). Đáp án: P₂O₅ (2·V=5·II); SO₂ (1·IV=2·II); H₂S (2·I=1·II); CH₄ (1·IV=4·I).';
+      }
+
+      // --- PHẦN 4: ĐIỀN KHUYẾT (Câu 13 - 16) ---
+      // Q13: I hoặc 1
+      const q13Val = document.getElementById('q13').value.trim().toUpperCase();
+      const q13Fb = document.getElementById('q13Feedback');
+      q13Fb.classList.remove('hidden');
+      if (q13Val === 'I' || q13Val === '1' || q13Val === 'HOÁ TRỊ I' || q13Val === 'HOA TRI I') {
+        p4Score += 0.5;
+        q13Fb.className = 'text-xs font-bold p-2.5 rounded-xl bg-emerald-100 text-emerald-900';
+        q13Fb.innerHTML = '✅ Đúng (0,5đ): Chlorine có hoá trị I.';
+      } else {
+        q13Fb.className = 'text-xs font-bold p-2.5 rounded-xl bg-rose-100 text-rose-900';
+        q13Fb.innerHTML = '❌ Chưa đúng (0đ). Đáp án: I (hoặc 1).';
+      }
+
+      // Q14: II hoặc 2
+      const q14Val = document.getElementById('q14').value.trim().toUpperCase();
+      const q14Fb = document.getElementById('q14Feedback');
+      q14Fb.classList.remove('hidden');
+      if (q14Val === 'II' || q14Val === '2' || q14Val === 'HOÁ TRỊ II' || q14Val === 'HOA TRI II') {
+        p4Score += 0.5;
+        q14Fb.className = 'text-xs font-bold p-2.5 rounded-xl bg-emerald-100 text-emerald-900';
+        q14Fb.innerHTML = '✅ Đúng (0,5đ): Nhóm sulfate có hoá trị II.';
+      } else {
+        q14Fb.className = 'text-xs font-bold p-2.5 rounded-xl bg-rose-100 text-rose-900';
+        q14Fb.innerHTML = '❌ Chưa đúng (0đ). Đáp án: II (hoặc 2).';
+      }
+
+      // Q15: Al2O3
+      const q15Val = document.getElementById('q15').value.trim().replace(/\s+/g, '');
+      const q15Fb = document.getElementById('q15Feedback');
+      q15Fb.classList.remove('hidden');
+      if (q15Val === 'Al2O3' || q15Val === 'AL2O3' || q15Val === 'Al₂O₃') {
+        p4Score += 0.5;
+        q15Fb.className = 'text-xs font-bold p-2.5 rounded-xl bg-emerald-100 text-emerald-900';
+        q15Fb.innerHTML = '✅ Đúng (0,5đ): CTHH là Al₂O₃ (aluminium oxide).';
+      } else {
+        q15Fb.className = 'text-xs font-bold p-2.5 rounded-xl bg-rose-100 text-rose-900';
+        q15Fb.innerHTML = '❌ Chưa đúng (0đ). Đáp án: Al₂O₃ (hoặc Al2O3).';
+      }
+
+      // Q16: 6 nguyên tử
+      const q16Val = parseInt(document.getElementById('q16').value);
+      const q16Fb = document.getElementById('q16Feedback');
+      q16Fb.classList.remove('hidden');
+      if (q16Val === 6) {
+        p4Score += 0.5;
+        q16Fb.className = 'text-xs font-bold p-2.5 rounded-xl bg-emerald-100 text-emerald-900';
+        q16Fb.innerHTML = '✅ Đúng (0,5đ): CuSO₄ có 1 Cu + 1 S + 4 O = 6 nguyên tử.';
+      } else {
+        q16Fb.className = 'text-xs font-bold p-2.5 rounded-xl bg-rose-100 text-rose-900';
+        q16Fb.innerHTML = '❌ Chưa đúng (0đ). Đáp án: 6 nguyên tử (1 Cu, 1 S, 4 O).';
+      }
+
+      // --- PHẦN 5: TỰ LUẬN (Câu 17 - 20) ---
+      // Q17: CaCO3 (3 ý: nguyên tố tạo nên, số nguyên tử/tỉ lệ, KLPT = 100)
+      const q17Text = document.getElementById('q17').value.toLowerCase();
+      const q17Fb = document.getElementById('q17Feedback');
+      q17Fb.classList.remove('hidden');
+      let q17Score = 0;
+      if (q17Text.includes('ca') || q17Text.includes('calcium') || q17Text.includes('3 nguyên tố') || q17Text.includes('ba nguyên tố')) q17Score += 0.2;
+      if (q17Text.includes('1:1:3') || q17Text.includes('1 ca') || q17Text.includes('tỉ lệ') || q17Text.includes('ti le')) q17Score += 0.15;
+      if (q17Text.includes('100') || q17Text.includes('amu')) q17Score += 0.15;
+      if (q17Score > 0.5) q17Score = 0.5;
+      if (q17Score === 0 && q17Text.length > 15) q17Score = 0.25; // partial credit
+      p5Score += q17Score;
+      q17Fb.className = 'text-xs font-bold p-3 rounded-xl bg-emerald-50 border border-emerald-300 text-emerald-900';
+      q17Fb.innerHTML = `<strong>Biểu điểm đạt: ${q17Score.toFixed(2)} / 0,5 đ</strong><br>
+        <strong>Đáp án chuẩn SGK:</strong><br>
+        1. Gồm 3 nguyên tố: calcium, carbon, oxygen.<br>
+        2. Tỉ lệ số nguyên tử Ca : C : O là 1 : 1 : 3.<br>
+        3. Khối lượng phân tử: 40 + 12 + 3×16 = 100 amu.`;
+
+      // Q18: CuSO4 (%Cu = 40%)
+      const q18Text = document.getElementById('q18').value.toLowerCase();
+      const q18Fb = document.getElementById('q18Feedback');
+      q18Fb.classList.remove('hidden');
+      let q18Score = 0;
+      if (q18Text.includes('160')) q18Score += 0.2;
+      if (q18Text.includes('40') || q18Text.includes('40%')) q18Score += 0.3;
+      if (q18Score > 0.5) q18Score = 0.5;
+      if (q18Score === 0 && q18Text.length > 15) q18Score = 0.2;
+      p5Score += q18Score;
+      q18Fb.className = 'text-xs font-bold p-3 rounded-xl bg-emerald-50 border border-emerald-300 text-emerald-900';
+      q18Fb.innerHTML = `<strong>Biểu điểm đạt: ${q18Score.toFixed(2)} / 0,5 đ</strong><br>
+        <strong>Đáp án chuẩn SGK:</strong><br>
+        - KLPT của CuSO₄ = 64·1 + 32·1 + 16·4 = 160 amu.<br>
+        - %Cu = (64 / 160) × 100% = <strong>40%</strong>.`;
+
+      // Q19: SO2
+      const q19Text = document.getElementById('q19').value.toUpperCase();
+      const q19Fb = document.getElementById('q19Feedback');
+      q19Fb.classList.remove('hidden');
+      let q19Score = 0;
+      if (q19Text.includes('SXOY') || q19Text.includes('SX') || q19Text.includes('X·IV')) q19Score += 0.2;
+      if (q19Text.includes('SO2') || q19Text.includes('SO₂')) q19Score += 0.3;
+      if (q19Score > 0.5) q19Score = 0.5;
+      if (q19Score === 0 && q19Text.length > 10) q19Score = 0.2;
+      p5Score += q19Score;
+      q19Fb.className = 'text-xs font-bold p-3 rounded-xl bg-emerald-50 border border-emerald-300 text-emerald-900';
+      q19Fb.innerHTML = `<strong>Biểu điểm đạt: ${q19Score.toFixed(2)} / 0,5 đ</strong><br>
+        <strong>Đáp án chuẩn SGK:</strong><br>
+        - Viết dạng chung: S<sub>x</sub><sup>IV</sup>O<sub>y</sub><sup>II</sup>.<br>
+        - Quy tắc hoá trị: x · IV = y · II ➔ x/y = 2/4 = 1/2 ➔ x=1, y=2.<br>
+        - CTHH: <strong>SO₂</strong> (sulfur dioxide).`;
+
+      // Q20: CH4
+      const q20Text = document.getElementById('q20').value.toUpperCase();
+      const q20Fb = document.getElementById('q20Feedback');
+      q20Fb.classList.remove('hidden');
+      let q20Score = 0;
+      if (q20Text.includes('X = 1') || q20Text.includes('X=1') || q20Text.includes('Y = 4') || q20Text.includes('Y=4')) q20Score += 0.2;
+      if (q20Text.includes('CH4') || q20Text.includes('CH₄')) q20Score += 0.3;
+      if (q20Score > 0.5) q20Score = 0.5;
+      if (q20Score === 0 && q20Text.length > 10) q20Score = 0.2;
+      p5Score += q20Score;
+      q20Fb.className = 'text-xs font-bold p-3 rounded-xl bg-emerald-50 border border-emerald-300 text-emerald-900';
+      q20Fb.innerHTML = `<strong>Biểu điểm đạt: ${q20Score.toFixed(2)} / 0,5 đ</strong><br>
+        <strong>Đáp án chuẩn SGK:</strong><br>
+        - Đặt CTHH là C<sub>x</sub>H<sub>y</sub>.<br>
+        - x = (16 × 75%) / (12 × 100%) = 1; y = (16 × 25%) / (1 × 100%) = 4.<br>
+        - CTHH: <strong>CH₄</strong> (methane).`;
+
+      // --- TỔNG KẾT ---
+      const totalScore = p1Score + p2Score + p3Score + p4Score + p5Score;
+      const formattedTotal = totalScore.toFixed(1);
+
+      document.getElementById('scoreP1').textContent = p1Score.toFixed(1) + ' / 2.0';
+      document.getElementById('scoreP2').textContent = p2Score.toFixed(1) + ' / 2.0';
+      document.getElementById('scoreP3').textContent = p3Score.toFixed(1) + ' / 2.0';
+      document.getElementById('scoreP4').textContent = p4Score.toFixed(1) + ' / 2.0';
+      document.getElementById('scoreP5').textContent = p5Score.toFixed(1) + ' / 2.0';
+
+      document.getElementById('certFinalScore').textContent = formattedTotal;
+      document.getElementById('certDate').textContent = new Date().toLocaleDateString('vi-VN');
+
+      const badge = document.getElementById('certRankBadge');
+      const remark = document.getElementById('certTeacherRemark');
+
+      if (totalScore >= 8.5) {
+        badge.className = 'inline-block mt-2 px-4 py-1 rounded-full text-xs font-black uppercase tracking-wider bg-emerald-100 text-emerald-800';
+        badge.textContent = 'XẾP LOẠI: XUẤT SẮC (GIỎI)';
+        remark.textContent = 'Thầy Lê Văn Thắng khen ngợi: Em nắm rất vững bản chất hoá trị, ý nghĩa CTHH và vận dụng xuất sắc các công thức tính toán theo chuẩn IUPAC!';
+        playSuccess();
+        triggerConfetti();
+      } else if (totalScore >= 6.5) {
+        badge.className = 'inline-block mt-2 px-4 py-1 rounded-full text-xs font-black uppercase tracking-wider bg-sky-100 text-sky-800';
+        badge.textContent = 'XẾP LOẠI: KHÁ';
+        remark.textContent = 'Thầy Lê Văn Thắng nhận xét: Em đã hiểu bài khá tốt! Hãy rèn luyện thêm phần lập CTHH và kiểm tra kĩ các bước tính % để đạt điểm tối đa nhé!';
+        playSuccess();
+      } else if (totalScore >= 5.0) {
+        badge.className = 'inline-block mt-2 px-4 py-1 rounded-full text-xs font-black uppercase tracking-wider bg-amber-100 text-amber-800';
+        badge.textContent = 'XẾP LOẠI: ĐẠT YÊU CẦU';
+        remark.textContent = 'Thầy Lê Văn Thắng nhắc nhở: Em đã đạt chuẩn kiến thức cơ bản. Cần xem lại các thẻ tra cứu hoá trị và bài ca hoá trị để giải nhanh hơn nhé!';
+      } else {
+        badge.className = 'inline-block mt-2 px-4 py-1 rounded-full text-xs font-black uppercase tracking-wider bg-rose-100 text-rose-800';
+        badge.textContent = 'XẾP LOẠI: CẦN CỐ GẮNG';
+        remark.textContent = 'Đừng nản lòng nhé! Em hãy đọc lại kiến thức trọng tâm các phần I, II, III bên trên và bấm nút Làm lại bài kiểm tra để cải thiện điểm số!';
+      }
+
+      document.getElementById('examResultCard').classList.remove('hidden');
+      document.getElementById('examResultCard').scrollIntoView({ behavior: 'smooth' });
+
+      // Update progress
+      document.getElementById('mainProgressBar').style.width = '100%';
+      document.getElementById('progressText').textContent = '100%';
+      document.getElementById('starCounter').textContent = Math.round(totalScore * 5) + ' ⭐';
+    }
+
+    function retakeExam() {
+      if (confirm('Em có muốn làm lại toàn bộ 20 câu kiểm tra để nâng cao điểm số?')) {
+        document.getElementById('fullExamForm').reset();
+        document.querySelectorAll('[id$="Feedback"]').forEach(el => el.classList.add('hidden'));
+        document.getElementById('examResultCard').classList.add('hidden');
+        updateExamProgress();
+        document.getElementById('kiem-tra-20-cau').scrollIntoView({ behavior: 'smooth' });
+      }
+    }
+
+    // ================= WINDOW ONLOAD =================
+    window.addEventListener('DOMContentLoaded', () => {
+      checkSavedSession();
+      calculateCompound('KNO3');
+      renderValencyGrid();
+      updateExamProgress();
+    });
+  </script>
+</body>
+</html>
