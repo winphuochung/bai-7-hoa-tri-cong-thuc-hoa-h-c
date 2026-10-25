@@ -1981,7 +1981,8 @@
     }
 
     // ================= GOOGLE SHEET SYNC =================
-    let GOOGLE_SHEET_API_URL = localStorage.getItem('khtn7_sheet_url') || "";
+    const DEFAULT_GOOGLE_SHEET_URL = "https://script.google.com/macros/s/AKfycbzWA4ZmVHI30qYZuf0o7MbWq0VoUFkQ9KYwg7F07A6WYMQquUxOPAaWo94VT2-1H-Wc/exec";
+    let GOOGLE_SHEET_API_URL = localStorage.getItem('khtn7_sheet_url') || DEFAULT_GOOGLE_SHEET_URL;
 
     function openSheetModal() {
       document.getElementById('sheetUrlInput').value = GOOGLE_SHEET_API_URL;
@@ -1994,7 +1995,7 @@
     }
 
     function saveSheetConfig() {
-      const url = document.getElementById('sheetUrlInput').value.trim();
+      const url = document.getElementById('sheetUrlInput').value.trim() || DEFAULT_GOOGLE_SHEET_URL;
       GOOGLE_SHEET_API_URL = url;
       try {
         localStorage.setItem('khtn7_sheet_url', url);
@@ -2002,7 +2003,7 @@
 
       const notice = document.getElementById('sheetConfigNotice');
       notice.className = 'text-xs p-2.5 rounded-xl font-bold bg-emerald-100 text-emerald-800 border border-emerald-300';
-      notice.textContent = url ? '✅ Đã lưu cấu hình Google Sheet thành công!' : 'ℹ️ Đã xóa liên kết Google Sheet.';
+      notice.textContent = '✅ Đã lưu cấu hình Google Sheet thành công!';
       notice.classList.remove('hidden');
       updateSheetUIStatus();
       setTimeout(closeSheetModal, 1200);
@@ -2012,7 +2013,7 @@
       const msg = document.getElementById('sheetSyncMsg');
       const icon = document.getElementById('sheetSyncIcon');
       if (GOOGLE_SHEET_API_URL) {
-        msg.innerHTML = 'Đã liên kết với Google Sheet của Giáo viên. Điểm sẽ tự động đồng bộ khi nộp bài.';
+        msg.innerHTML = 'Đã kết nối với Google Sheet của Thầy Lê Văn Thắng. Kết quả sẽ tự động lưu khi học sinh nộp bài.';
         icon.className = 'fa-solid fa-circle-check text-emerald-600 text-base flex-shrink-0';
       } else {
         msg.innerHTML = 'Chưa liên kết Google Sheet (Kết quả lưu trên máy học sinh).';
@@ -2111,7 +2112,7 @@
 
       <div class="space-y-1">
         <label class="block text-xs font-bold text-slate-700">URL Web App Google Apps Script:</label>
-        <input type="url" id="sheetUrlInput" placeholder="https://script.google.com/macros/s/.../exec" class="w-full px-3.5 py-2.5 rounded-xl border-2 border-slate-200 focus:border-emerald-500 text-xs font-mono text-slate-800 outline-none">
+        <input type="url" id="sheetUrlInput" value="https://script.google.com/macros/s/AKfycbzWA4ZmVHI30qYZuf0o7MbWq0VoUFkQ9KYwg7F07A6WYMQquUxOPAaWo94VT2-1H-Wc/exec" placeholder="https://script.google.com/macros/s/.../exec" class="w-full px-3.5 py-2.5 rounded-xl border-2 border-slate-200 focus:border-emerald-500 text-xs font-mono text-slate-800 outline-none">
       </div>
 
       <div id="sheetConfigNotice" class="hidden text-xs p-2.5 rounded-xl font-bold"></div>

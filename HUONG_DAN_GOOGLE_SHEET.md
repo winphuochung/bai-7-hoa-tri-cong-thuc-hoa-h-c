@@ -54,13 +54,12 @@ Có 2 cách cực kỳ nhanh:
   3. Dán đường link `https://script.google.com/macros/s/.../exec` vào và bấm **Lưu cấu hình**.
   4. Trình duyệt sẽ tự động ghi nhớ đường link này cho các lần làm bài tiếp theo!
 
-- **Cách 2 (Lưu cố định vĩnh viễn trong code):**
-  1. Mở file `index.html`.
-  2. Tìm dòng chữ:
-     ```javascript
-     let GOOGLE_SHEET_API_URL = "...";
-     ```
-  3. Thay thế bằng đường link Web App của Thầy.
+- **Cách 2 (Đã cấu hình sẵn mặc định trong code):**
+  Mã nguồn dự án đã được tích hợp sẵn đường link Web App chính thức của Thầy:
+  ```
+  https://script.google.com/macros/s/AKfycbzWA4ZmVHI30qYZuf0o7MbWq0VoUFkQ9KYwg7F07A6WYMQquUxOPAaWo94VT2-1H-Wc/exec
+  ```
+  Ngay khi học sinh bấm nộp bài kiểm tra trên máy tính hay điện thoại, kết quả sẽ tự động được gửi thẳng về Google Sheet của Thầy mà không cần làm thêm thao tác nào!
 
 ---
 
