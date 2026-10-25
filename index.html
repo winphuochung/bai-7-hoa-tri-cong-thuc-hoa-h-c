@@ -2,7 +2,7 @@
 <html lang="vi" class="scroll-smooth">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover">
   <title>KHTN 7 | Bài 7: Hoá Trị và Công Thức Hoá Học (Chuẩn IUPAC - GDPT 2018)</title>
   <link rel="icon" type="image/png" href="logo.png">
   <meta name="theme-color" content="#0284c7">
@@ -11,6 +11,15 @@
   <meta property="og:description" content="Bài học số tương tác chuẩn IUPAC CT GDPT 2018, mô hình phân tử, máy tính % khối lượng và bài kiểm tra 20 câu.">
   <meta property="og:image" content="logo.png">
   <meta property="og:type" content="website">
+
+  <!-- PWA & Mobile Cross-Platform Meta Tags (Android & iOS) -->
+  <link rel="manifest" href="manifest.json">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="KHTN 7 - Bài 7">
+  <link rel="apple-touch-icon" href="logo.png">
+  <meta name="format-detection" content="telephone=no, date=no, address=no, email=no">
   <!-- Google Fonts: Nunito & Quicksand -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -62,9 +71,49 @@
   </script>
 
   <style>
+    html {
+      -webkit-text-size-adjust: 100%;
+      text-size-adjust: 100%;
+      scroll-behavior: smooth;
+    }
     body {
       background-color: #f8fafc;
       color: #1e293b;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      text-rendering: optimizeLegibility;
+      overflow-x: hidden;
+      /* Support iOS Safe Area notch & home bar */
+      padding-left: env(safe-area-inset-left);
+      padding-right: env(safe-area-inset-right);
+    }
+    header {
+      padding-top: max(0.5rem, env(safe-area-inset-top));
+    }
+    footer {
+      padding-bottom: max(2rem, env(safe-area-inset-bottom));
+    }
+    /* Touch optimization */
+    button, input, select, textarea, a, .quiz-opt-btn, .warmup-btn, .calc-btn {
+      touch-action: manipulation;
+      -webkit-tap-highlight-color: transparent;
+    }
+    /* Prevent iOS auto-zoom on input focus */
+    @media screen and (max-width: 768px) {
+      input[type="text"],
+      input[type="number"],
+      input[type="url"],
+      select,
+      textarea {
+        font-size: 16px !important;
+      }
+    }
+    /* Dynamic viewport height for modals */
+    .mobile-modal-card {
+      max-height: 90dvh;
+      max-height: 90vh;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
     }
     /* Logo protection & prominence */
     .header-logo {
@@ -94,6 +143,17 @@
         min-height: 58px !important;
         max-height: 58px !important;
         border-width: 2.5px !important;
+      }
+    }
+    @media (max-width: 420px) {
+      .header-logo {
+        width: 48px !important;
+        height: 48px !important;
+        min-width: 48px !important;
+        max-width: 48px !important;
+        min-height: 48px !important;
+        max-height: 48px !important;
+        border-width: 2px !important;
       }
     }
     .modal-logo {
@@ -150,8 +210,8 @@
 <body class="font-sans antialiased text-slate-800 bg-slate-50 min-h-screen flex flex-col selection:bg-amber-200 selection:text-amber-900">
 
   <!-- ================= GIAO DIỆN ĐĂNG NHẬP (LOGIN MODAL) ================= -->
-  <div id="loginModal" class="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/80 backdrop-blur-md p-4 transition-all">
-    <div class="bg-white rounded-3xl shadow-2xl border-4 border-sky-300 w-full max-w-lg p-6 sm:p-8 space-y-6 bounce-in relative overflow-hidden">
+  <div id="loginModal" class="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/80 backdrop-blur-md p-3 sm:p-4 transition-all">
+    <div class="bg-white rounded-3xl shadow-2xl border-4 border-sky-300 w-full max-w-lg p-5 sm:p-8 space-y-5 sm:space-y-6 bounce-in relative overflow-hidden mobile-modal-card">
       <!-- Decorative background bubble -->
       <div class="absolute -right-12 -top-12 w-40 h-40 bg-sky-100 rounded-full blur-2xl pointer-events-none"></div>
 
@@ -1296,6 +1356,20 @@
       return audioCtx;
     }
 
+    // Unlock Web Audio API for iOS Safari & Android Chrome autoplay restrictions
+    function unlockMobileAudio() {
+      try {
+        const ctx = getAudioContext();
+        if (ctx && ctx.state === 'suspended') ctx.resume();
+      } catch (e) {}
+      ['touchstart', 'touchend', 'click'].forEach(evt => {
+        document.removeEventListener(evt, unlockMobileAudio);
+      });
+    }
+    ['touchstart', 'touchend', 'click'].forEach(evt => {
+      document.addEventListener(evt, unlockMobileAudio, { passive: true });
+    });
+
     function toggleSound() {
       isSoundOn = !isSoundOn;
       const icon = document.getElementById('soundIcon');
@@ -2096,8 +2170,8 @@
   </script>
 
   <!-- ================= MODAL CẤU HÌNH GOOGLE SHEET ================= -->
-  <div id="sheetConfigModal" class="fixed inset-0 z-50 hidden flex items-center justify-center bg-slate-900/75 backdrop-blur-sm p-4 transition-all">
-    <div class="bg-white rounded-3xl shadow-2xl border-2 border-emerald-300 w-full max-w-md p-6 space-y-4 bounce-in relative">
+  <div id="sheetConfigModal" class="fixed inset-0 z-50 hidden flex items-center justify-center bg-slate-900/75 backdrop-blur-sm p-3 sm:p-4 transition-all">
+    <div class="bg-white rounded-3xl shadow-2xl border-2 border-emerald-300 w-full max-w-md p-5 sm:p-6 space-y-4 bounce-in relative mobile-modal-card">
       <div class="flex items-center justify-between border-b pb-3">
         <h3 class="text-base font-black text-slate-900 flex items-center">
           <i class="fa-solid fa-table text-emerald-600 mr-2 text-lg"></i>

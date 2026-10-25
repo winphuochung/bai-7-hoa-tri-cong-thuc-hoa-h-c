@@ -1,0 +1,19 @@
+{
+  "name": "KHTN 7 - Hoá Trị & Công Thức Hoá Học",
+  "short_name": "KHTN7 Bài 7",
+  "description": "Bài học số tương tác môn Khoa học tự nhiên 7 - Thầy Lê Văn Thắng (TH & THCS Phước Hưng)",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#f8fafc",
+  "theme_color": "#0284c7",
+  "orientation": "portrait-primary",
+  "lang": "vi",
+  "icons": [
+    {
+      "src": "logo.png",
+      "sizes": "192x192 512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
